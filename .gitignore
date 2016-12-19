@@ -84,3 +84,4 @@ config/hot_export_token.txt
 *.csv
 *.shp.xml
 *.dbf.xml
+*.ini

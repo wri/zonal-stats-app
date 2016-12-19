@@ -71,7 +71,6 @@ class Layer(object):
             merged['tcd'] = "> {}%".format(threshold)
 
         # get the input table into df format
-        print self.final_aoi
 
         final_aoi_dbf = self.final_aoi.replace(".shp", ".dbf")
         final_aoi_dbf = simpledbf.Dbf5(final_aoi_dbf)

@@ -35,7 +35,9 @@ for i in range(start, stop):
 
     outzstats = ZonalStatisticsAsTable(zone, "VALUE", value, z_stats_tbl, "DATA", "SUM")
     arcpy.AddMessage('debug: finished zstats')
-
+    result = arcpy.GetCount_management(z_stats_tbl)
+    count = int(result.getOutput(0))
+    print "count of records in zstats table: {}".format(count)
     dbf = simpledbf.Dbf5(z_stats_tbl)
 
     # convert dbf to pandas dataframe

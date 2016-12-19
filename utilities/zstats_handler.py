@@ -52,5 +52,3 @@ def main_script(layer, raster):
         if p.returncode != 0:
             feature_status[start_id] = False
             start_id += 1
-
-    print feature_status
