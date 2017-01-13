@@ -28,6 +28,7 @@ analysis_requested = prep_shapefile.build_analysis(analysis)
 
 l = Layer(shapefile, col_name, intersect, intersect_col)
 l.final_aoi = shapefile
+l.project_source_aoi()
 l.intersect_source_aoi()
 
 for analysis_name in analysis_requested:

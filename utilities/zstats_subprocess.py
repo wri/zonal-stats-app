@@ -5,6 +5,7 @@ import simpledbf
 import prep_shapefile
 import arcpy
 from arcpy.sa import *
+import datetime
 
 arcpy.CheckOutExtension("Spatial")
 
@@ -32,9 +33,12 @@ for i in range(start, stop):
     z_stats_tbl = os.path.join(tables_dir, 'output.dbf')
 
     print 'debug: starting zstats'
-
+    start_time = datetime.datetime.now()
     outzstats = ZonalStatisticsAsTable(zone, "VALUE", value, z_stats_tbl, "DATA", "SUM")
     arcpy.AddMessage('debug: finished zstats')
+    end_time = datetime.datetime.now() - start_time
+    print "time elapsed: {}".format(end_time)
+
     result = arcpy.GetCount_management(z_stats_tbl)
     count = int(result.getOutput(0))
     print "count of records in zstats table: {}".format(count)

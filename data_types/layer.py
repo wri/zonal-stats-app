@@ -1,6 +1,7 @@
 import os
 import simpledbf
 import pandas as pd
+import arcpy
 
 from utilities import post_processing
 from utilities import prep_shapefile
@@ -35,6 +36,11 @@ class Layer(object):
         print "creating Layer with aoi {} and source id column {}".format(self.source_aoi, self.source_id_col)
 
     # these are all the things i want to do with the input shapefile. this is called from zonal_stats.py
+    def project_source_aoi(self):
+        arcpy.env.overwriteOutput = True
+        out_cs = arcpy.SpatialReference(4326)
+        self.final_aoi = os.path.join(self.root_dir, 'shapefile', "project.shp")
+        arcpy.Project_management(self.source_aoi, self.final_aoi, out_cs)
 
     def intersect_source_aoi(self):
         if self.intersect_aoi:

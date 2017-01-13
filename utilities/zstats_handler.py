@@ -2,7 +2,6 @@ import subprocess
 import arcpy
 import os
 
-
 def main_script(layer, raster):
 
     final_aoi = layer.final_aoi
