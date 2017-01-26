@@ -26,16 +26,25 @@ analysis_requested = prep_shapefile.build_analysis(analysis)
 # remap the tcd mosaic and apply a raster function that adds tcd + loss year mosaics
 # raster_prep.remap_threshold(geodatabase, threshold)
 
+# create layer object. this just sets up the properties that will later be filled in for each analysis
 l = Layer(shapefile, col_name, intersect, intersect_col)
+
+# set final aoi equal to the shapefile
 l.final_aoi = shapefile
+
+# project input to wgf84
 l.project_source_aoi()
+
+# if we set an intersection layer, this will evaluate. otherwise, final aoi = source aoi
 l.intersect_source_aoi()
 
 for analysis_name in analysis_requested:
-
+    # create raster object.
     r = Raster(analysis_name, geodatabase)
-    # run zstats, put results into sql db
+
+    # run zstats, put results into sql db. for emissions, will have emissions_max_of, min_of
     zstats_handler.main_script(l, r)
+
     # get results from sql to pandas df
     r.merge_results(l)
 
@@ -47,5 +56,6 @@ if l.emissions_min_of is not None:
     print "processing emissions"
     l.emissions = post_processing.process_emissions(l)
 
+#join possible tables (loss, emissions, extent, etc) and decode to loss year, tcd
 l.join_tables(threshold, user_def_column_name, intersect, intersect_col)
 

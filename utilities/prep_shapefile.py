@@ -1,5 +1,6 @@
 import os
-
+import numpy as np
+import math
 import arcpy
 
 
@@ -64,3 +65,40 @@ def build_analysis(analysis_requested):
             analysis_requested.append('forest_loss')
 
     return analysis_requested
+
+
+def get_area(geom):
+    """
+    Calculate geodesic area for Hansen data, assuming a fix pixel size of 0.00025 * 0.00025 degree
+    using WGS 1984 as spatial reference.
+    Pixel size various with latitude, which is it the only input parameter.
+    """
+
+    lat = geom.projectAs("WGS 1984").centroid.Y
+
+    a = 6378137.0  # Semi major axis of WGS 1984 ellipsoid
+    b = 6356752.314245179  # Semi minor axis of WGS 1984 ellipsoid
+
+    d_lat = 0.00025  # pixel hight
+    d_lon = 0.00025  # pixel width
+
+    pi = math.pi
+
+    q = d_lon / 360
+    e = math.sqrt(1 - (b / a) ** 2)
+
+    area = abs((pi * b ** 2 * (
+    2 * np.arctanh(e * np.sin(np.radians(lat + d_lat))) / (2 * e) + np.sin(np.radians(lat + d_lat)) / (
+    (1 + e * np.sin(np.radians(lat + d_lat))) * (1 - e * np.sin(np.radians(lat + d_lat)))))) - (pi * b ** 2 * (
+    2 * np.arctanh(e * np.sin(np.radians(lat))) / (2 * e) + np.sin(np.radians(lat)) / (
+    (1 + e * np.sin(np.radians(lat))) * (1 - e * np.sin(np.radians(lat))))))) * q
+
+    return area
+
+
+def average_pixel_size(mask):
+    with arcpy.da.SearchCursor(mask, 'SHAPE@') as cursor:
+        for row in cursor:
+            avg_pix_size = get_area(row[0])
+            print avg_pix_size
+    return avg_pix_size

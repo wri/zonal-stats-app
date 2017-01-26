@@ -40,12 +40,12 @@ class Raster(object):
     def merge_results(self, l):
 
         # convert sql table to df
+        print "converting sql table to df"
         tables_dir = os.path.join(l.root_dir, 'tables')
-
         zstats_results_db = os.path.join(tables_dir, 'zstats_results_db.db')
 
         conn = sqlite3.connect(zstats_results_db)
-
+        # self.analysis is like: forest_loss and/or emissions, etc
         qry = "SELECT VALUE, ID, SUM, {0} FROM {0} WHERE VALUE > 19".format(self.analysis)
 
         df = pd.read_sql(qry, conn)

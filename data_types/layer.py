@@ -77,7 +77,6 @@ class Layer(object):
             merged['tcd'] = "> {}%".format(threshold)
 
         # get the input table into df format
-
         final_aoi_dbf = self.final_aoi.replace(".shp", ".dbf")
         final_aoi_dbf = simpledbf.Dbf5(final_aoi_dbf)
 
@@ -86,13 +85,15 @@ class Layer(object):
 
         # drop columns not needed
         columns_to_keep = [user_def_column_name]
-
+        print columns_to_keep
         if intersect:
             columns_to_add = post_processing.generate_list_columns(intersect, intersect_col)
             columns_to_keep.extend(columns_to_add)
-        print columns_to_keep
+
         # make a dataframe with just the ID columns we want to keep
-        final_aoi_df = final_aoi_df.drop([x for x in list(final_aoi_df.columns.values) if x not in columns_to_keep], 1)
+        columns_to_keep = ['forest_loss', 'tcd', 'year']
+        # final_aoi_df = final_aoi_df.drop([x for x in list(final_aoi_df.columns.values) if x not in columns_to_keep], 1)
+
         final_aoi_df = final_aoi_df.reset_index()
 
         merged_reset = merged.reset_index()
@@ -101,9 +102,9 @@ class Layer(object):
         joined = merged_reset.merge(final_aoi_df, how='left', left_on="ID", right_index=True)
 
         # keep all columns except those with the word 'SUM' in name, those were copied and renamed to the analysis
-        cols = [c for c in joined.columns if 'SUM' not in c]
-        joined = joined[cols].reset_index()
-
+        # cols = [c for c in joined.columns if 'SUM' not in c]
+        # joined = joined[cols].reset_index()
+        joined = joined[columns_to_keep]
         # write final output to csv
         final_output_csv = os.path.join(self.root_dir, 'result', 'final_output.csv')
         joined.to_csv(final_output_csv)

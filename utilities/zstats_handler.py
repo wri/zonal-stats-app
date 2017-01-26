@@ -2,6 +2,7 @@ import subprocess
 import arcpy
 import os
 
+
 def main_script(layer, raster):
 
     final_aoi = layer.final_aoi
@@ -11,19 +12,19 @@ def main_script(layer, raster):
     end_id = int(arcpy.GetCount_management(final_aoi).getOutput(0))
 
     print "Number of features: {}".format(end_id)
-    zstats_subprocess = os.path.join(layer.root_dir, "utilities", "zstats_subprocess.py")
 
+    zstats_subprocess = os.path.join(layer.root_dir, "utilities", "zstats_subprocess.py")
     script_cmd = [r"C:\Python27\ArcGIS10.4\python.exe", zstats_subprocess, raster.value,
                   raster.zone, layer.final_aoi, raster.cellsize, raster.analysis]
 
     expected_complete_total = len(range(start_id, end_id))
     feature_status = {}
 
-    # comment below this for testing
     while len(feature_status) < expected_complete_total:
 
         cmd = script_cmd + [str(start_id), str(end_id)]
 
+        # this runs the analysis
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
         for line in iter(p.stdout.readline, b''):
