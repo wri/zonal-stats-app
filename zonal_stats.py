@@ -32,7 +32,7 @@ l = Layer(shapefile, col_name, intersect, intersect_col)
 # set final aoi equal to the shapefile
 l.final_aoi = shapefile
 
-# project input to wgf84
+# project input to wgs84
 l.project_source_aoi()
 
 # if we set an intersection layer, this will evaluate. otherwise, final aoi = source aoi

@@ -85,7 +85,7 @@ class Layer(object):
 
         # drop columns not needed
         columns_to_keep = [user_def_column_name]
-        print columns_to_keep
+
         if intersect:
             columns_to_add = post_processing.generate_list_columns(intersect, intersect_col)
             columns_to_keep.extend(columns_to_add)

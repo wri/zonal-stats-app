@@ -34,11 +34,10 @@ for i in range(start, stop):
     # extract loss/tcd within the shapefile
     print "extract by mask"
 
-    # extract_loss = ExtractByMask(zone, mask)
-
     outputdir = os.path.dirname(mask)
-    output_tif = os.path.join(outputdir, "extract_loss")
-    # extract_loss.save(output_tif)
+    output_tif = os.path.join(outputdir, "extract_loss.tif")
+
+    arcpy.gp.ExtractByMask_sa(zone, mask, output_tif)
 
     # create table of loss/tcd codes with count
     raster_text, row_counter = raster_prep.output_ras_table(output_tif, avg_pix_size)
@@ -73,6 +72,7 @@ for i in range(start, stop):
     df[analysis] = df['SUM']
 
     # name of the sql database to store the sql table
+    print tables_dir
     zstats_results_db = os.path.join(tables_dir, 'zstats_results_db.db')
 
     # create a connection to the sql database

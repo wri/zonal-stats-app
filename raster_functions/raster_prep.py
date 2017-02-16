@@ -1,23 +1,19 @@
 import os
 import arcpy
 import csv
-from utilities import prep_shapefile
 
 
 def remap_threshold(geodatabase, threshold):
+    # the loss mosaic should have a function applied to it 1 time and never gets touched after.
+    # the only function to be swapped out is for remap
     print "remaping mosaics in {} to {}".format(geodatabase, threshold)
     this_dir = os.path.dirname(os.path.abspath(__file__))
     remap_func = os.path.join(this_dir, "remap_gt" + str(threshold) + ".rft.xml")
-    loss_tcd_function = os.path.join(os.path.join(this_dir, "loss_tcd.rft.xml"))
 
-    dict = {"tcd": remap_func, "loss": loss_tcd_function}
+    mosaic_location = os.path.join(geodatabase, "tcd")
 
-    for key in dict:
-        mosaic_location = os.path.join(geodatabase, key)
-        function = dict[key]
-
-        arcpy.EditRasterFunction_management(mosaic_location, "EDIT_MOSAIC_DATASET", "REMOVE", function)
-        arcpy.EditRasterFunction_management(mosaic_location, "EDIT_MOSAIC_DATASET", "INSERT", function)
+    arcpy.EditRasterFunction_management(mosaic_location, "EDIT_MOSAIC_DATASET", "REMOVE", remap_func)
+    arcpy.EditRasterFunction_management(mosaic_location, "EDIT_MOSAIC_DATASET", "INSERT", remap_func)
 
 
 def output_ras_table(input_raster, avg_pix_size):
