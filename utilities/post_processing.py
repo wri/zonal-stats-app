@@ -45,14 +45,20 @@ def value_to_tcd_year(value):
 
 
 def generate_list_columns(intersect, intersect_col):
-    if intersect_col == 'FID':
-        intersect_col = 'index'
-    columns_to_add = [intersect_col]
+
+    columns_to_add = []
+    if len(intersect_col) > 0:
+
+        columns_to_add.append(intersect_col)
+
     intersect_filename = intersect.split('\\')[-1]
     admin_dict = [{'adm0': {1: "ISO"}, 'adm1': {2: "ID_1"}, 'adm2': {3: "ID_2"}, 'adm3': {4: "ID_3"},
                    'adm4': {5: "ID_4"}, 'adm5': {6: "ID_5"}}]
+    
     mydict = admin_dict[0]
     try:
+        # incrementally add all admin levels for whatever admin level is intersected.
+        # example: adm2 will ad id_2, id_1, iso
         for key, value in mydict[intersect_filename].iteritems():
             id_num = key
         for key, value in mydict.iteritems():
@@ -60,8 +66,10 @@ def generate_list_columns(intersect, intersect_col):
             for i in range(0, id_num + 1):
                 try:
                     columns_to_add.append(mydict[key][i])
+
                 except KeyError:
                     pass
+
     except KeyError:
         pass
 

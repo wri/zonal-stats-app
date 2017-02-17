@@ -84,14 +84,18 @@ class Layer(object):
         final_aoi_df = final_aoi_dbf.to_dataframe()
 
         # drop columns not needed
-        columns_to_keep = [user_def_column_name]
+        columns_to_keep = ['forest_loss', 'tcd', 'year']
 
+        if user_def_column_name:
+
+            columns_to_keep.extend(user_def_column_name)
+        print columns_to_keep
         if intersect:
+            print "adding columns"
             columns_to_add = post_processing.generate_list_columns(intersect, intersect_col)
             columns_to_keep.extend(columns_to_add)
+            print columns_to_keep
 
-        # make a dataframe with just the ID columns we want to keep
-        columns_to_keep = ['forest_loss', 'tcd', 'year']
         # final_aoi_df = final_aoi_df.drop([x for x in list(final_aoi_df.columns.values) if x not in columns_to_keep], 1)
 
         final_aoi_df = final_aoi_df.reset_index()
