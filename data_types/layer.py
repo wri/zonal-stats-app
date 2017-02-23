@@ -89,12 +89,12 @@ class Layer(object):
         if user_def_column_name:
 
             columns_to_keep.extend(user_def_column_name)
-        print columns_to_keep
+
         if intersect:
-            print "adding columns"
+
             columns_to_add = post_processing.generate_list_columns(intersect, intersect_col)
             columns_to_keep.extend(columns_to_add)
-            print columns_to_keep
+
 
         # final_aoi_df = final_aoi_df.drop([x for x in list(final_aoi_df.columns.values) if x not in columns_to_keep], 1)
 

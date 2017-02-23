@@ -54,7 +54,7 @@ def generate_list_columns(intersect, intersect_col):
     intersect_filename = intersect.split('\\')[-1]
     admin_dict = [{'adm0': {1: "ISO"}, 'adm1': {2: "ID_1"}, 'adm2': {3: "ID_2"}, 'adm3': {4: "ID_3"},
                    'adm4': {5: "ID_4"}, 'adm5': {6: "ID_5"}}]
-    
+
     mydict = admin_dict[0]
     try:
         # incrementally add all admin levels for whatever admin level is intersected.
