@@ -23,7 +23,7 @@ def output_ras_table(input_raster, avg_pix_size):
 
     # write attribute table to text file, while calculating area
     raster_text = os.path.join(this_dir, "raster_table.csv")
-    print input_raster
+
     with open(raster_text, "wb") as csv_file:
         csv_writer = csv.writer(csv_file)
         with arcpy.da.SearchCursor(input_raster, ["Value", "Count"]) as rows:
@@ -36,5 +36,3 @@ def output_ras_table(input_raster, avg_pix_size):
                 csv_writer.writerow([val, count, area])
 
     return raster_text, row_counter
-
-# output_ras_table(r'C:\Users\samantha.gibbes\Documents\gis\test\small_raster.tif', 724.07)

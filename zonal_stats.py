@@ -14,7 +14,7 @@ threshold = config_dict['threshold']
 geodatabase = config_dict['geodatabase']
 intersect = config_dict['intersect']
 intersect_col = config_dict['intersect_col']
-user_def_column_name = None
+user_def_column_name = config_dict['user_def_column_name']
 col_name = "FID"  # if this is in a gdb, make sure it assigns it OBJECT_ID
 
 # delete existing database so duplicate data isn't appended
