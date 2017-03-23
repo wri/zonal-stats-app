@@ -3,8 +3,6 @@ import os
 import sqlite3
 import prep_shapefile
 import arcpy
-from raster_functions import raster_prep
-import pandas
 from arcpy.sa import *
 import datetime
 import simpledbf
