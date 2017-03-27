@@ -59,10 +59,9 @@ class Layer(object):
         print "joining tables"
 
         # make a list of all the tables we have. These are already dataframes
-        # possible_dfs = [self.emissions, self.forest_loss, self.biomass_weight, self.forest_extent]
-        possible_dfs = [self.emissions, self.forest_loss, self.biomass_weight]
+        possible_dfs = [self.emissions, self.forest_loss, self.biomass_weight, self.forest_extent]
         df_list = [x for x in possible_dfs if x is not None]
-        print df_list
+
         # how to get column names to keep? like extent, emissions, loss? i'm going through and getting
         # third column for each df which is the analysis name
         analysis_names = [x.columns.values[3] for x in df_list]
@@ -70,7 +69,7 @@ class Layer(object):
         # join all the data frames together on Value and ID
         merged = pd.concat([df.set_index(['VALUE', 'ID']) for df in df_list], axis=1)
         merged = merged.reset_index()
-        print merged
+
         # To 2 get outputs from a single function and apply to 2 different columns in the dataframe:
         # http://stackoverflow.com/questions/12356501/pandas-create-two-new-columns-in-a-dataframe-with-
         # values-calculated-from-a-pre?rq=1
@@ -116,4 +115,4 @@ class Layer(object):
         joined = joined[columns_to_keep]
         # write final output to csv
         final_output_csv = os.path.join(self.root_dir, 'result', 'final_output.csv')
-        joined.to_csv(final_output_csv)
+        joined.to_csv(final_output_csv, index=False)
