@@ -29,7 +29,7 @@ for i in range(start, stop):
     mask = prep_shapefile.zonal_stats_mask(final_aoi, i)
 
     # calculate average pixel size based on just the shapefile and an area formula
-    # avg_pix_size = prep_shapefile.average_pixel_size(mask)
+    avg_pix_size = prep_shapefile.average_pixel_size(mask, i)
 
     # extract loss/tcd within the shapefile
     # print "extract by mask"

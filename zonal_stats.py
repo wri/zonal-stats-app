@@ -56,6 +56,6 @@ if l.emissions_min_of is not None:
     print "processing emissions"
     l.emissions = post_processing.process_emissions(l)
 
-#join possible tables (loss, emissions, extent, etc) and decode to loss year, tcd
+# join possible tables (loss, emissions, extent, etc) and decode to loss year, tcd
 l.join_tables(threshold, user_def_column_name, intersect, intersect_col)
 

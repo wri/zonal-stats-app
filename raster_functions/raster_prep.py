@@ -13,6 +13,7 @@ def remap_threshold(geodatabase, threshold):
 
     arcpy.EditRasterFunction_management(mosaic_location, "EDIT_MOSAIC_DATASET", "REPLACE", remap_func)
 
+
 def output_ras_table(input_raster, avg_pix_size):
 
     this_dir = os.path.dirname(os.path.abspath(__file__))

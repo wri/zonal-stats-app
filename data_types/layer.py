@@ -116,3 +116,4 @@ class Layer(object):
         # write final output to csv
         final_output_csv = os.path.join(self.root_dir, 'result', 'final_output.csv')
         joined.to_csv(final_output_csv, index=False)
+        
