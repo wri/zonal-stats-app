@@ -1,4 +1,7 @@
 import os
+import datetime
+
+start = datetime.datetime.now()
 from data_types.layer import Layer
 from data_types.raster import Raster
 from raster_functions import raster_prep
@@ -8,6 +11,8 @@ from utilities import zstats_handler, post_processing, prep_shapefile, config_pa
 # get user inputs from config file:
 config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "utilities", "config_file.ini")
 config_dict = config_parser.read_config(config_file)
+
+# analysis: forest_extent, forest_loss, biomass_weight, emissions
 analysis = [x.strip() for x in config_dict['analysis'].split(",")]
 shapefile = config_dict['shapefile']
 threshold = config_dict['threshold']
@@ -16,6 +21,7 @@ intersect = config_dict['intersect']
 intersect_col = config_dict['intersect_col']
 user_def_column_name = config_dict['user_def_column_name']
 col_name = "FID"  # if this is in a gdb, make sure it assigns it OBJECT_ID
+method = config_dict['method']  # zonal_stats or average_area
 
 # delete existing database so duplicate data isn't appended
 prep_shapefile.delete_database()
@@ -43,7 +49,7 @@ for analysis_name in analysis_requested:
     r = Raster(analysis_name, geodatabase)
 
     # run zstats, put results into sql db. for emissions, will have emissions_max_of, min_of
-    zstats_handler.main_script(l, r)
+    zstats_handler.main_script(l, r, method)
 
     # get results from sql to pandas df
     r.merge_results(l)
@@ -59,3 +65,4 @@ if l.emissions_min_of is not None:
 # join possible tables (loss, emissions, extent, etc) and decode to loss year, tcd
 l.join_tables(threshold, user_def_column_name, intersect, intersect_col)
 
+print "elapsed time: {}".format(datetime.datetime.now() - start)

@@ -20,35 +20,16 @@ arcpy.env.overwriteOutput = True
 
 for i in range(start, stop):
     print i
-    # to adapt for new zonal stats (which isn't zonal stats), extract by mask, create raster
-    # get raster attribute table to make list of 1 column: pixel value 1 column: count
-    # then, calculate average pixel size on polygon
-    # multiple count by pixel size.
 
     # select one individual feature from the input shapefile
     mask = prep_shapefile.zonal_stats_mask(final_aoi, i)
-
-    # calculate average pixel size based on just the shapefile and an area formula
-    avg_pix_size = prep_shapefile.average_pixel_size(mask, i)
-
-    # extract loss/tcd within the shapefile
-    # print "extract by mask"
-    #
-    # outputdir = os.path.dirname(mask)
-    # output_tif = os.path.join(outputdir, "extract_loss.tif")
-    #
-    # arcpy.gp.ExtractByMask_sa(zone, mask, output_tif)
-
-    # # create table of loss/tcd codes with count
-    # raster_text, row_counter = raster_prep.output_ras_table(output_tif, avg_pix_size)
 
     arcpy.env.extent = mask
     arcpy.env.mask = mask
     arcpy.env.cellSize = cellsize
     arcpy.env.snapRaster = value
-    #
+
     tables_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'tables')
-    #
 
     z_stats_tbl = os.path.join(tables_dir, 'output.dbf')
 
@@ -67,11 +48,7 @@ for i in range(start, stop):
     # convert dbf to pandas dataframe
     df = dbf.to_dataframe()
 
-    # # convert csv to dataframe
-    # df = pandas.DataFrame.from_csv(raster_text)
-    # df = df.reset_index()
-    # df.columns = ['VALUE', 'COUNT', 'SUM']
-
+    # or.... df = average_area.average_area(mask, i, zone)
     # populate a new field "id" with the FID and analysis with the sum
     df['ID'] = i
     df[analysis] = df['SUM']

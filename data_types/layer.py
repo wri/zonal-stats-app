@@ -27,7 +27,7 @@ class Layer(object):
         self.emissions = None
         self.forest_loss = None
         self.biomass_weight = None
-        self.extent = None
+        self.forest_extent = None
 
         self.emissions_min_of = None
         self.emissions_max_of = None
@@ -102,7 +102,6 @@ class Layer(object):
             columns_to_add = post_processing.generate_list_columns(intersect, intersect_col)
             columns_to_keep.extend(columns_to_add)
 
-
         final_aoi_df = final_aoi_df.drop([x for x in list(final_aoi_df.columns.values) if x not in columns_to_keep], 1)
 
         final_aoi_df = final_aoi_df.reset_index()
@@ -116,4 +115,3 @@ class Layer(object):
         # write final output to csv
         final_output_csv = os.path.join(self.root_dir, 'result', 'final_output.csv')
         joined.to_csv(final_output_csv, index=False)
-        

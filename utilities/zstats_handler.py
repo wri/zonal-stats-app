@@ -3,8 +3,8 @@ import arcpy
 import os
 
 
-def main_script(layer, raster):
-
+def main_script(layer, raster, method):
+    # add to this if i'm running average area of zstats
     final_aoi = layer.final_aoi
 
     start_id = 0
@@ -13,16 +13,23 @@ def main_script(layer, raster):
 
     print "Number of features: {}".format(end_id)
 
-    zstats_subprocess = os.path.join(layer.root_dir, "utilities", "zstats_subprocess.py")
+    zstats_subprocess = None
+
+    if method == 'zonal_stats':
+        zstats_subprocess = os.path.join(layer.root_dir, "utilities", "zstats_subprocess.py")
+
+    if method == 'average_area':
+        print "method is average"
+        zstats_subprocess = os.path.join(layer.root_dir, "utilities", "average_area.py")
+
     script_cmd = [r"C:\Python27\ArcGIS10.4\python.exe", zstats_subprocess, raster.value,
                   raster.zone, layer.final_aoi, raster.cellsize, raster.analysis]
 
+    cmd = script_cmd + [str(start_id), str(end_id)]
     expected_complete_total = len(range(start_id, end_id))
     feature_status = {}
 
     while len(feature_status) < expected_complete_total:
-
-        cmd = script_cmd + [str(start_id), str(end_id)]
 
         # this runs the analysis
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)

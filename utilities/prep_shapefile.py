@@ -96,11 +96,12 @@ def get_area(geom):
     return area
 
 
-def average_pixel_size(mask, i):
-    # inserted where clause
-    where_clause = "FID = {}".format(i)
-    with arcpy.da.SearchCursor(mask, 'SHAPE@', where_clause) as cursor:
+def average_pixel_size(mask):
+
+    with arcpy.da.SearchCursor(mask, 'SHAPE@') as cursor:
         for row in cursor:
+
             avg_pix_size = get_area(row[0])
+
             print avg_pix_size
     return avg_pix_size
