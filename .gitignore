@@ -54,7 +54,7 @@ docs/_build/
 
 
 # Config files
-utilities/*.config
+utilities/*.ini
 
 # Google key JSON files
 spreadsheet.json
