@@ -58,11 +58,11 @@ def delete_database():
 
 
 def build_analysis(analysis_requested):
-    if 'emissions' in analysis_requested:
-        analysis_requested += ['emissions_min_of', 'emissions_max_of']
-        analysis_requested.remove('emissions')
-        if not "forest_loss" in analysis_requested:
-            analysis_requested.append('forest_loss')
+    # if 'emissions' in analysis_requested:
+    #     analysis_requested += ['emissions_min_of', 'emissions_max_of']
+    #     analysis_requested.remove('emissions')
+    if not "forest_loss" in analysis_requested:
+        analysis_requested.append('forest_loss')
 
     return analysis_requested
 

@@ -58,9 +58,9 @@ for analysis_name in analysis_requested:
     print 'setting attribute {} on object {} to be equal to the df for {}'.format(analysis_name, l, analysis_name)
     setattr(l, analysis_name, r.df)
 
-if l.emissions_min_of is not None:
-    print "processing emissions"
-    l.emissions = post_processing.process_emissions(l)
+# if l.emissions_min_of is not None:
+#     print "processing emissions"
+#     l.emissions = post_processing.process_emissions(l)
 
 # join possible tables (loss, emissions, extent, etc) and decode to loss year, tcd
 l.join_tables(threshold, user_def_column_name, intersect, intersect_col)

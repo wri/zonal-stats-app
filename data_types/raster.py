@@ -27,7 +27,8 @@ class Raster(object):
                            "emissions_max_of": {"zone": "loss", "value": "biomass", "cellsize": "MAXOF"},
                            "emissions_min_of": {"zone": "loss", "value": "biomass", "cellsize": "MINOF"},
                            "forest_extent": {"zone": "tcd", "value": "area", "cellsize": "MAXOF"},
-                           "biomass_weight": {"zone": "tcd", "value": "biomass", "cellsize": "MAXOF"}}
+                           "biomass_weight": {"zone": "tcd", "value": "biomass", "cellsize": "MAXOF"},
+                           "emissions": {"zone": "loss", "value": "biomass", "cellsize": "MAXOF"}}
 
         self.zone = os.path.join(self.geodatabase, zone_value_dict[self.analysis]["zone"])
         self.value = os.path.join(self.geodatabase, zone_value_dict[self.analysis]["value"])

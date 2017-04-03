@@ -35,6 +35,7 @@ for i in range(start, stop):
 
     print 'debug: starting zstats'
     start_time = datetime.datetime.now()
+    print 'debug: {0}, {1}'.format(zone, value)
     outzstats = ZonalStatisticsAsTable(zone, "VALUE", value, z_stats_tbl, "DATA", "SUM")
     arcpy.AddMessage('debug: finished zstats')
     end_time = datetime.datetime.now() - start_time

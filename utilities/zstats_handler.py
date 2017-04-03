@@ -22,7 +22,7 @@ def main_script(layer, raster, method):
         print "method is average"
         zstats_subprocess = os.path.join(layer.root_dir, "utilities", "average_area.py")
 
-    script_cmd = [r"C:\Python27\ArcGIS10.4\python.exe", zstats_subprocess, raster.value,
+    script_cmd = [r"C:\Python27\ArcGISx6410.4\python.exe", zstats_subprocess, raster.value,
                   raster.zone, layer.final_aoi, raster.cellsize, raster.analysis]
 
     cmd = script_cmd + [str(start_id), str(end_id)]
