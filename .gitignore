@@ -54,7 +54,7 @@ docs/_build/
 
 
 # Config files
-config/*.config
+utilities/*.config
 
 # Google key JSON files
 spreadsheet.json
@@ -86,3 +86,4 @@ config/hot_export_token.txt
 *.dbf.xml
 *.ini
 *.txt.zml
+
