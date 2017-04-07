@@ -5,7 +5,7 @@ start = datetime.datetime.now()
 from data_types.layer import Layer
 from data_types.raster import Raster
 from raster_functions import raster_prep
-from utilities import zstats_handler, post_processing, prep_shapefile, config_parser
+from utilities import zstats_handler, zstats_handler_test, post_processing, prep_shapefile, config_parser
 
 
 # get user inputs from config file:
@@ -49,6 +49,7 @@ for analysis_name in analysis_requested:
     r = Raster(analysis_name, geodatabase)
 
     # run zstats, put results into sql db. for emissions, will have emissions_max_of, min_of
+    # zstats_handler.main_script(l, r, method)
     zstats_handler.main_script(l, r, method)
 
     # get results from sql to pandas df

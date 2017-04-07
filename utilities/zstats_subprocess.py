@@ -19,7 +19,8 @@ stop = int(sys.argv[7])
 arcpy.env.overwriteOutput = True
 
 for i in range(start, stop):
-    print i
+
+    print "prepping feature id {}".format(i)
 
     # select one individual feature from the input shapefile
     mask = prep_shapefile.zonal_stats_mask(final_aoi, i)
@@ -33,17 +34,13 @@ for i in range(start, stop):
 
     z_stats_tbl = os.path.join(tables_dir, 'output.dbf')
 
-    print 'debug: starting zstats'
-    start_time = datetime.datetime.now()
-    print 'debug: {0}, {1}'.format(zone, value)
-    outzstats = ZonalStatisticsAsTable(zone, "VALUE", value, z_stats_tbl, "DATA", "SUM")
-    arcpy.AddMessage('debug: finished zstats')
-    end_time = datetime.datetime.now() - start_time
-    print "time elapsed: {}".format(end_time)
 
-    result = arcpy.GetCount_management(z_stats_tbl)
-    count = int(result.getOutput(0))
-    print "count of records in zstats table: {}".format(count)
+    start_time = datetime.datetime.now()
+
+    outzstats = ZonalStatisticsAsTable(zone, "VALUE", value, z_stats_tbl, "DATA", "SUM")
+    end_time = datetime.datetime.now() - start_time
+    print "debug:time elapsed: {}".format(end_time)
+
     dbf = simpledbf.Dbf5(z_stats_tbl)
 
     # convert dbf to pandas dataframe
@@ -65,9 +62,9 @@ for i in range(start, stop):
 
     # delete these because they create a lock
     del df
-    del count
     del dbf
     os.remove(z_stats_tbl)
+
     # reset these environments. Otherwise the shapefile is redefined based on features within the extent
     arcpy.env.extent = None
     arcpy.env.mask = None

@@ -25,17 +25,19 @@ def main_script(layer, raster, method):
     script_cmd = [r"C:\Python27\ArcGIS10.4\python.exe", zstats_subprocess, raster.value,
                   raster.zone, layer.final_aoi, raster.cellsize, raster.analysis]
 
-    cmd = script_cmd + [str(start_id), str(end_id)]
     expected_complete_total = len(range(start_id, end_id))
     feature_status = {}
 
     while len(feature_status) < expected_complete_total:
 
+        cmd = script_cmd + [str(start_id), str(end_id)]
+
         # this runs the analysis
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
+        # for each line that comes back from the subprocess, if "succeeded" is in the line
+        # increase counter by 1.
         for line in iter(p.stdout.readline, b''):
-
             arcpy.AddMessage(line.rstrip())
             # Each line that comes back from the subprocess represents 1 feature/ID
             # We need to keep track of this in case a feature fails so we can skip it
@@ -57,5 +59,6 @@ def main_script(layer, raster, method):
         # as long as it isn't 0, its a failure, and increment the counter by 1 so it starts on the next feautre
 
         if p.returncode != 0:
+            print "failed"
             feature_status[start_id] = False
             start_id += 1
