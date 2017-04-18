@@ -22,6 +22,7 @@ intersect_col = config_dict['intersect_col']
 user_def_column_name = config_dict['user_def_column_name']
 col_name = "FID"  # if this is in a gdb, make sure it assigns it OBJECT_ID
 method = config_dict['method']  # zonal_stats or average_area
+output_file_name = config_dict['output_file_name']
 
 # delete existing database so duplicate data isn't appended
 prep_shapefile.delete_database()
@@ -49,7 +50,6 @@ for analysis_name in analysis_requested:
     r = Raster(analysis_name, geodatabase)
 
     # run zstats, put results into sql db. for emissions, will have emissions_max_of, min_of
-    # zstats_handler.main_script(l, r, method)
     zstats_handler.main_script(l, r, method)
 
     # get results from sql to pandas df
@@ -64,6 +64,6 @@ for analysis_name in analysis_requested:
 #     l.emissions = post_processing.process_emissions(l)
 
 # join possible tables (loss, emissions, extent, etc) and decode to loss year, tcd
-l.join_tables(threshold, user_def_column_name, intersect, intersect_col)
+l.join_tables(threshold, user_def_column_name, output_file_name, intersect, intersect_col)
 
 print "elapsed time: {}".format(datetime.datetime.now() - start)

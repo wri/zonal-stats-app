@@ -3,6 +3,7 @@ import simpledbf
 import pandas as pd
 import arcpy
 import raster
+import sys
 
 from utilities import post_processing
 from utilities import prep_shapefile
@@ -55,7 +56,7 @@ class Layer(object):
             print "no intersect aoi"
             self.final_aoi = self.source_aoi
 
-    def join_tables(self, threshold, user_def_column_name, intersect=None, intersect_col=None):
+    def join_tables(self, threshold, user_def_column_name, output_file_name, intersect=None, intersect_col=None):
         print "joining tables"
 
         # make a list of all the tables we have. These are already dataframes
@@ -74,7 +75,11 @@ class Layer(object):
         # http://stackoverflow.com/questions/12356501/pandas-create-two-new-columns-in-a-dataframe-with-
         # values-calculated-from-a-pre?rq=1
         # tcd and year columns is equal to the first and second output from the function: value_to_tcd_year
-        merged['tcd'], merged['year'] = zip(*merged["VALUE"].map(post_processing.value_to_tcd_year))
+        try:
+            merged['tcd'], merged['year'] = zip(*merged["VALUE"].map(post_processing.value_to_tcd_year))
+        except KeyError:
+            print "oops, loss mosaic doesn't have the arithmetic function applied. Refer to readme file"
+            sys.exit()
 
         # the value_to_tcd_year function is good for when user runs all thresholds, but not just one.
         # so, overwrite the tcd column when it comes back
@@ -113,5 +118,5 @@ class Layer(object):
 
         joined = joined[columns_to_keep]
         # write final output to csv
-        final_output_csv = os.path.join(self.root_dir, 'result', 'final_output.csv')
+        final_output_csv = os.path.join(self.root_dir, 'result', '{}.csv'.format(output_file_name))
         joined.to_csv(final_output_csv, index=False)

@@ -24,11 +24,13 @@ for i in range(start, stop):
 
     # select one individual feature from the input shapefile
     mask = prep_shapefile.zonal_stats_mask(final_aoi, i)
-
+    scratch_wkspc = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'scratch.gdb')
     arcpy.env.extent = mask
     arcpy.env.mask = mask
     arcpy.env.cellSize = cellsize
     arcpy.env.snapRaster = value
+    arcpy.env.scratchWorkspace = scratch_wkspc
+    arcpy.env.workspace = scratch_wkspc
 
     tables_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'tables')
 
