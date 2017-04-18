@@ -1,12 +1,18 @@
 # zonal_stats_app
+### Overview
+This tool is intended for the specific task of calculating area of loss within the UMD Hansen forest loss product. 
 
-Prepping Data:
-You will need to build at least 3 mosaics in ArcGIS. 
-1) Loss Data. Name: loss
-2) Tree Cover Density. Name: tcd
-3) Area. Name: area
 
-The only parameters that are mandatory are name and coordinate system. They must all be in WGS84 projection.
+### Data Prep
+You will need to build at least 3 mosaics in ArcGIS. Name them exactly as below. The only parameters that are mandatory are name and coordinate system. They must all be in WGS84 projection.
+
+Mosaic Name | Data within Mosaic
+----- | -----
+loss | Hansen Loss tiles
+tcd | Hansen Tree Cover Extent tiles
+area | Custom Built Area Tiles
+
+
 
 If analyzing biomass density or emissions, create a fourth mosaic:
 4) Emissions Tiles (for users of procanalysis01: S:\biomass\mtc02). Name: biomass
