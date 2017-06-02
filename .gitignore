@@ -86,4 +86,4 @@ config/hot_export_token.txt
 *.dbf.xml
 *.ini
 *.txt.zml
-
+*/config_file.ini
