@@ -24,8 +24,6 @@ class Raster(object):
 
     def populate_ras_prop(self):
         zone_value_dict = {"forest_loss": {"zone": "loss", "value": "area", "cellsize": "MAXOF"},
-                           "emissions_max_of": {"zone": "loss", "value": "biomass", "cellsize": "MAXOF"},
-                           "emissions_min_of": {"zone": "loss", "value": "biomass", "cellsize": "MINOF"},
                            "forest_extent": {"zone": "tcd", "value": "area", "cellsize": "MAXOF"},
                            "biomass_weight": {"zone": "tcd", "value": "biomass", "cellsize": "MAXOF"},
                            "emissions": {"zone": "loss", "value": "biomass", "cellsize": "MAXOF"}}

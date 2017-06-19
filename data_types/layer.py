@@ -30,9 +30,6 @@ class Layer(object):
         self.biomass_weight = None
         self.forest_extent = None
 
-        self.emissions_min_of = None
-        self.emissions_max_of = None
-
         self.root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
         print "creating Layer with aoi {} and source id column {}".format(self.source_aoi, self.source_id_col)
@@ -62,11 +59,15 @@ class Layer(object):
         # make a list of all the tables we have. These are already dataframes
         possible_dfs = [self.emissions, self.forest_loss, self.biomass_weight, self.forest_extent]
         df_list = [x for x in possible_dfs if x is not None]
-
+        print df_list
         # how to get column names to keep? like extent, emissions, loss? i'm going through and getting
         # third column for each df which is the analysis name
         analysis_names = [x.columns.values[3] for x in df_list]
 
+        for index, item in enumerate(analysis_names):
+            if item == 'forest_loss':
+                analysis_names[index] = 'forest_loss_ha'
+        self.forest_loss['forest_loss_ha'] = self.forest_loss['forest_loss']/10000
         # join all the data frames together on Value and ID
         merged = pd.concat([df.set_index(['VALUE', 'ID']) for df in df_list], axis=1)
         merged = merged.reset_index()

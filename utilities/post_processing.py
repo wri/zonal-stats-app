@@ -3,19 +3,11 @@ import pandas as pd
 
 def process_emissions(layer):
 
-    minmax = pd.concat([layer.emissions_min_of, layer.emissions_max_of])
-    idx = ['VALUE', 'ID']
-    joined = minmax.set_index(idx).join(layer.forest_loss.set_index(idx), lsuffix='_bio', rsuffix='_loss')
+    layer.emissions['emissions_mtc02'] = layer.emissions.SUM * 3.67 * .5 / 1000000
 
-    joined['bio_per_pix'] = joined.SUM_bio * joined.SUM_loss / 10000
-    joined = joined.reset_index()
+    del layer.emissions['emissions']
 
-    avg_bio = joined.groupby(['VALUE', 'ID', 'SUM_loss'])['bio_per_pix'].mean()
-    avg_bio = avg_bio.to_frame().reset_index()
-    avg_bio['emissions'] = avg_bio.bio_per_pix * 3.67 * .5
-    del avg_bio['bio_per_pix']
-
-    return avg_bio
+    return layer.emissions
 
 
 def value_to_tcd_year(value):

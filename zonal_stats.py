@@ -5,11 +5,11 @@ start = datetime.datetime.now()
 from data_types.layer import Layer
 from data_types.raster import Raster
 from raster_functions import raster_prep
-from utilities import zstats_handler, zstats_handler_test, post_processing, prep_shapefile, config_parser
+from utilities import zstats_handler, post_processing, prep_shapefile, config_parser
 
 
 # get user inputs from config file:
-config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "utilities", "config_file.ini")
+config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config_file.ini")
 config_dict = config_parser.read_config(config_file)
 
 # analysis: forest_extent, forest_loss, biomass_weight, emissions
@@ -56,12 +56,13 @@ for analysis_name in analysis_requested:
     r.merge_results(l)
 
     # set attribute emissions_max_of on the layer object to be equal to emissions max of df
+    # if not doing min/max, do i need to do this??
     print 'setting attribute {} on object {} to be equal to the df for {}'.format(analysis_name, l, analysis_name)
     setattr(l, analysis_name, r.df)
 
-# if l.emissions_min_of is not None:
-#     print "processing emissions"
-#     l.emissions = post_processing.process_emissions(l)
+if l.emissions is not None:
+    print "processing emissions"
+    l.emissions = post_processing.process_emissions(l)
 
 # join possible tables (loss, emissions, extent, etc) and decode to loss year, tcd
 l.join_tables(threshold, user_def_column_name, output_file_name, intersect, intersect_col)
