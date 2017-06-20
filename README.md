@@ -1,4 +1,4 @@
-# zonal_stats_app
+# zonal-stats-app
 ### Overview
 This tool is intended for the specific task of calculating area of loss within the University of Maryland's (UMD) Hansen forest loss product. The basic steps to create a CSV of forest loss and/or emissions are:
 
@@ -41,6 +41,10 @@ biomass (optional) | Woods Hole Research Center Biomass in Mg/Ha
    7. Click OK
    8. Click OK to close the Mosaic Dataset Properties dialogue box
    <br />![alt_text](https://github.com/wri/zonal-stats-app/blob/master/images/biomass_arithmetic_2.JPG?raw=true "second biomass function") 
+   
+   #### Final Biomass Mosaic Function Chain
+   ![alt_text](https://github.com/wri/zonal-stats-app/blob/master/images/biomass_mosaic_function.JPG?raw=true "second biomass function") 
+   
 ### Edit the config file
 In the main folder is a file called config_file.ini.sample. Rename this to config_file.ini and fill in your specific parameters
 <br />The required parameters are:
