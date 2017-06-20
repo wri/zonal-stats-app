@@ -56,7 +56,10 @@ Other options:
 - **user_def_column_name**: by default, the code uses the FID of the shapefile to identify each feature. Here, you can specify which column uniquely identifies your input shapefile
 
 ### Run the Code
-python zonal_stats_app.py
+This can be done several ways. Either within a python code editor, or the most simple way, through a command prompt window.
+1. Open a command prompt window from the zonal-stats-app folder
+2. Type: python zonal_stats.py
+3. Hit enter
 
 ### View the results
 Results are stored in a .csv in the result folder with the output file name you specified in the config file. 
