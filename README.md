@@ -1,4 +1,4 @@
-# zonal_stats_app
+# zonal-stats-app
 ### Overview
 This tool is intended for the specific task of calculating area of loss within the University of Maryland's (UMD) Hansen forest loss product. The basic steps to create a CSV of forest loss and/or emissions are:
 
@@ -26,18 +26,25 @@ biomass (optional) | Woods Hole Research Center Biomass in Mg/Ha
    1. In the catalog view of ArcGIS, right click the LOSS mosaic -> properties. 
    2. Under the "functions" tab, right click "Mosaic Function" -> Insert Function -> Arithmetic. 
    3. Under the "Arithmetic tab", for "Input Raster 2", navigate and select the "TCD" mosaic you just createad. Input Raster 2 should now say "tcd". The "Operation" shoud say "Plus". Click OK.
+   <br />![loss mosaic functions](https://github.com/wri/zonal-stats-app/blob/master/images/loss_arithmetic.JPG?raw=true "Functions Applied to Loss Mosaic")
+   
    
    <br />![loss mosaic functions](https://github.com/wri/zonal-stats-app/blob/master/images/loss_mosaic.JPG?raw=true "Functions Applied to Loss Mosaic")
 2. Apply an Arithmetic Function to the Biomass Mosaic (if analyzing emissions). The biomass data is in Mg/ha. We want to know how much biomass is in each PIXEL. To do this, multiply the biomass pixel by the area pixel in hectares. 
    1. In the catalog view of ArcGIS, right click the BIOMASS mosaic -> properties. 
    2. Under the "functions" tab, right click "Mosaic Function" -> Insert Function -> Arithmetic. 
    3. Under the "Arithmetic tab", for "Input Raster 2", navigate and select the "AREA" mosaic you just createad. Input Raster 2 should now say "biomass". Change the "Operation" to "Multiply. Click OK.
+   <br />![alt_text](https://github.com/wri/zonal-stats-app/blob/master/images/biomass_arithmetic_1.JPG?raw=true "first biomass function")
    4. Add a second function: Right click the "area" mosaic in the Function Chain. -> Insert Function -> Arithmetic.
    5. Under "Generate raster from constant" Select Raster: Raster 2
    6. Constant: 10000
    7. Click OK
    8. Click OK to close the Mosaic Dataset Properties dialogue box
-      
+   <br />![alt_text](https://github.com/wri/zonal-stats-app/blob/master/images/biomass_arithmetic_2.JPG?raw=true "second biomass function") 
+   
+   #### Final Biomass Mosaic Function Chain
+   ![alt_text](https://github.com/wri/zonal-stats-app/blob/master/images/biomass_mosaic_function.JPG?raw=true "second biomass function") 
+   
 ### Edit the config file
 In the main folder is a file called config_file.ini.sample. Rename this to config_file.ini and fill in your specific parameters
 <br />The required parameters are:
@@ -63,3 +70,4 @@ This can be done several ways. Either within a python code editor, or the most s
 
 ### View the results
 Results are stored in a .csv in the result folder with the output file name you specified in the config file. 
+<br />![alt_text](https://github.com/wri/zonal-stats-app/blob/master/images/csv_walkthrough.jpg?raw=true "csv walkthrough")
