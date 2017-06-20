@@ -16,12 +16,10 @@ class Layer(object):
     :return:
     """
 
-    def __init__(self, source_aoi, source_id_col, intersect_aoi=None, intersect_aoi_col=None):
+    def __init__(self, source_aoi, source_id_col):
 
         self.source_aoi = source_aoi
         self.source_id_col = source_id_col
-        self.intersect_aoi = intersect_aoi
-        self.intersect_aoi_col = intersect_aoi_col
 
         self.final_aoi = None
 
@@ -42,24 +40,15 @@ class Layer(object):
         arcpy.Project_management(self.source_aoi, self.final_aoi, out_cs)
 
     def intersect_source_aoi(self):
-        if self.intersect_aoi:
-            print "intersecting '{}' with '{}'".format(os.path.basename(self.source_aoi),
-                                                       os.path.basename(self.intersect_aoi))
+        self.final_aoi = self.source_aoi
 
-            self.final_aoi = prep_shapefile.intersect(self.source_aoi, self.intersect_aoi, self.root_dir,
-                                                      self.intersect_aoi_col)
-
-        else:
-            print "no intersect aoi"
-            self.final_aoi = self.source_aoi
-
-    def join_tables(self, threshold, user_def_column_name, output_file_name, intersect=None, intersect_col=None):
+    def join_tables(self, threshold, user_def_column_name, output_file_name):
         print "joining tables"
 
         # make a list of all the tables we have. These are already dataframes
         possible_dfs = [self.emissions, self.forest_loss, self.biomass_weight, self.forest_extent]
         df_list = [x for x in possible_dfs if x is not None]
-        print df_list
+
         # how to get column names to keep? like extent, emissions, loss? i'm going through and getting
         # third column for each df which is the analysis name
         analysis_names = [x.columns.values[3] for x in df_list]
@@ -67,7 +56,15 @@ class Layer(object):
         for index, item in enumerate(analysis_names):
             if item == 'forest_loss':
                 analysis_names[index] = 'forest_loss_ha'
+            if item == 'forest_extent':
+                analysis_names[index] = 'forest_extent_ha'
+            if item == 'biomass_weight':
+                analysis_names[index] = 'biomass_weight_Mg'
+
         self.forest_loss['forest_loss_ha'] = self.forest_loss['forest_loss']/10000
+        self.forest_extent['forest_extent_ha'] = self.forest_extent['forest_extent']/10000
+        self.biomass_weight['biomass_weight_Mg'] = self.biomass_weight['biomass_weight']
+
         # join all the data frames together on Value and ID
         merged = pd.concat([df.set_index(['VALUE', 'ID']) for df in df_list], axis=1)
         merged = merged.reset_index()
@@ -102,11 +99,6 @@ class Layer(object):
         if user_def_column_name:
 
             columns_to_keep.append(user_def_column_name)
-
-        if intersect:
-
-            columns_to_add = post_processing.generate_list_columns(intersect, intersect_col)
-            columns_to_keep.extend(columns_to_add)
 
         final_aoi_df = final_aoi_df.drop([x for x in list(final_aoi_df.columns.values) if x not in columns_to_keep], 1)
 

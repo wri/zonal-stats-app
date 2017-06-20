@@ -46,7 +46,6 @@ class Raster(object):
         conn = sqlite3.connect(zstats_results_db)
         # self.analysis is like: forest_loss and/or emissions, etc
         qry = "SELECT VALUE, ID, SUM, {0} FROM {0} WHERE VALUE > 19".format(self.analysis)
-        #qry = "SELECT * FROM {0}".format(self.analysis)
         df = pd.read_sql(qry, conn)
 
         self.df = df

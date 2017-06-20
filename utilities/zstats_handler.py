@@ -3,7 +3,7 @@ import arcpy
 import os
 
 
-def main_script(layer, raster, method):
+def main_script(layer, raster):
     # add to this if i'm running average area of zstats
     final_aoi = layer.final_aoi
 
@@ -15,12 +15,7 @@ def main_script(layer, raster, method):
 
     zstats_subprocess = None
 
-    if method == 'zonal_stats':
-        zstats_subprocess = os.path.join(layer.root_dir, "utilities", "zstats_subprocess.py")
-
-    if method == 'average_area':
-        print "method is average"
-        zstats_subprocess = os.path.join(layer.root_dir, "utilities", "average_area.py")
+    zstats_subprocess = os.path.join(layer.root_dir, "utilities", "zstats_subprocess.py")
 
     script_cmd = [r"C:\Python27\ArcGIS10.4\python.exe", zstats_subprocess, raster.value,
                   raster.zone, layer.final_aoi, raster.cellsize, raster.analysis]
