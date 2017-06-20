@@ -1,9 +1,9 @@
 [inputs]
 analysis = forest_loss, emissions
-shapefile = C:\Users\samantha.gibbes\Documents\gis\sample_tiles\test.shp
+shapefile = C:\Users\concessions.shp
 threshold = all
-geodatabase = C:\Users\samantha.gibbes\Documents\gis\sample_tiles\mosaics.gdb
-output_file_name = test
-intersect =
-intersect_col =
-user_def_column_name =
+geodatabase = C:\Users\mosaics.gdb
+output_file_name = loss_in_peru_concessions
+intersect = C:\Users\peru.shp
+intersect_col = admin_name
+user_def_column_name = concessions_id
