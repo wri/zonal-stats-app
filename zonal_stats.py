@@ -28,7 +28,7 @@ prep_shapefile.delete_database()
 analysis_requested = prep_shapefile.build_analysis(analysis)
 
 # remap the tcd mosaic and apply a raster function that adds tcd + loss year mosaics
-#raster_prep.remap_threshold(geodatabase, threshold)
+raster_prep.remap_threshold(geodatabase, threshold)
 
 # create layer object. this just sets up the properties that will later be filled in for each analysis
 l = Layer(shapefile, col_name)
