@@ -38,20 +38,15 @@ The biomass data is in Mg/ha. We want to know how much biomass is in each PIXEL.
    6. Constant: 10000
    7. Click OK
    8. Click OK to close the Mosaic Dataset Properties dialogue box
-   
-   
+      
 ### Edit the config file
-In the main folder is a file called config_file.ini. Open this in a text editor. Below is an example of the config file
-
-<br />[inputs]
-<br />analysis = forest_loss, emissions
-<br />shapefile = C:\Users\concessions.shp
-<br />threshold = all
-<br />geodatabase = C:\Users\mosaics.gdb
-<br />output_file_name = test
-<br />intersect = C:\Users\peru.shp
-<br />intersect_col = admin_name
-<br />user_def_column_name = concessions_id
+In the main folder is a file called config_file.ini.sample. Rename this to config_file.ini and fill in your specific parameters
+<br />The required parameters are:
+<br />**analysis**
+<br />**shapefile**
+<br />**threhsold**
+<br />**geodatabase**
+<br />**output_file_name**
 
 Other options:
 - **analysis**: forest_loss, emissions, forest_extent, biomass_weight
