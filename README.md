@@ -27,9 +27,8 @@ biomass (optional) | Woods Hole Research Center Biomass in Mg/Ha
    2. Under the "functions" tab, right click "Mosaic Function" -> Insert Function -> Arithmetic. 
    3. Under the "Arithmetic tab", for "Input Raster 2", navigate and select the "TCD" mosaic you just createad. Input Raster 2 should now say "tcd". The "Operation" shoud say "Plus". Click OK.
    
-2. Apply an Arithmetic Function to the Biomass Mosaic (if analyzing emissions)
-
-The biomass data is in Mg/ha. We want to know how much biomass is in each PIXEL. To do this, multiply the biomass pixel by the area pixel in hectares. 
+   <br />![loss mosaic functions](https://github.com/wri/zonal-stats-app/blob/master/images/loss_mosaic.JPG?raw=true "Functions Applied to Loss Mosaic")
+2. Apply an Arithmetic Function to the Biomass Mosaic (if analyzing emissions). The biomass data is in Mg/ha. We want to know how much biomass is in each PIXEL. To do this, multiply the biomass pixel by the area pixel in hectares. 
    1. In the catalog view of ArcGIS, right click the BIOMASS mosaic -> properties. 
    2. Under the "functions" tab, right click "Mosaic Function" -> Insert Function -> Arithmetic. 
    3. Under the "Arithmetic tab", for "Input Raster 2", navigate and select the "AREA" mosaic you just createad. Input Raster 2 should now say "biomass". Change the "Operation" to "Multiply. Click OK.
@@ -57,7 +56,10 @@ Other options:
 - **user_def_column_name**: by default, the code uses the FID of the shapefile to identify each feature. Here, you can specify which column uniquely identifies your input shapefile
 
 ### Run the Code
-python zonal_stats_app.py
+This can be done several ways. Either within a python code editor, or the most simple way, through a command prompt window.
+1. Open a command prompt window from the zonal-stats-app folder
+2. Type: python zonal_stats.py
+3. Hit enter
 
 ### View the results
 Results are stored in a .csv in the result folder with the output file name you specified in the config file. 
