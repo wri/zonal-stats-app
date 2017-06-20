@@ -59,11 +59,11 @@ class Layer(object):
             if item == 'forest_extent':
                 analysis_names[index] = 'forest_extent_ha'
             if item == 'biomass_weight':
-                analysis_names[index] = 'biomass_weight_Mg'
+                analysis_names[index] = 'biomass_weight_Tg'
 
         self.forest_loss['forest_loss_ha'] = self.forest_loss['forest_loss']/10000
         self.forest_extent['forest_extent_ha'] = self.forest_extent['forest_extent']/10000
-        self.biomass_weight['biomass_weight_Mg'] = self.biomass_weight['biomass_weight']
+        self.biomass_weight['biomass_weight_Tg'] = self.biomass_weight['biomass_weight']/1000000
 
         # join all the data frames together on Value and ID
         merged = pd.concat([df.set_index(['VALUE', 'ID']) for df in df_list], axis=1)
