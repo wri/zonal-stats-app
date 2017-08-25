@@ -15,8 +15,8 @@ The code works by creating unique "bins" of data to collect area pixels which ar
 
 ### Prerequisites and dependencies
 
-Download and install HDF5
-you will need to register and download the software [here](https://www.hdfgroup.org/downloads/hdf5/).
+Download and install HDF5.
+You will need to register and download the software [here](https://www.hdfgroup.org/downloads/hdf5/).
 
 Download the build which matches your python instance (ie 32bit or 64bit)
 Make sure the HDF installation directory is added to your environment PATH. The installation normally should take care of this.
