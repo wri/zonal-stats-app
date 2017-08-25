@@ -12,6 +12,7 @@ This tool is intended for the specific task of calculating area of loss within t
 
 The code works by creating unique "bins" of data to collect area pixels which are then summed within each bin using ArcGIS Zonal Statistics. The bins are the combination of 1) loss year and 2) tree cover density. This allows the tool to summarize loss for all years and at any of the pre-defined tree cover density thresholds: 10, 15, 20, 25, 30, 50, 75.
 
+<<<<<<< HEAD
 
 ### Prerequisites and dependencies
 
@@ -39,6 +40,8 @@ if no error message appears you are good to go, otherwise revise your installati
 More info [here](http://www.pytables.org/usersguide/installation.html).
 
 
+=======
+>>>>>>> refs/remotes/origin/master
 ### Data Prep
 You will need to build at least 3 mosaics in ArcGIS. Name them exactly as below. They must all be in WGS84 projection.
 

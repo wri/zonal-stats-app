@@ -17,7 +17,7 @@ def main_script(layer, raster):
 
     zstats_subprocess = os.path.join(layer.root_dir, "utilities", "zstats_subprocess.py")
 
-    script_cmd = [r"C:\Python27\ArcGIS10.5\python.exe", zstats_subprocess, raster.value,
+    script_cmd = [r"C:\Python27\ArcGIS10.4\python.exe", zstats_subprocess, raster.value,
                   raster.zone, layer.final_aoi, raster.cellsize, raster.analysis]
 
     expected_complete_total = len(range(start_id, end_id))
