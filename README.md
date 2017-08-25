@@ -12,33 +12,6 @@ This tool is intended for the specific task of calculating area of loss within t
 
 The code works by creating unique "bins" of data to collect area pixels which are then summed within each bin using ArcGIS Zonal Statistics. The bins are the combination of 1) loss year and 2) tree cover density. This allows the tool to summarize loss for all years and at any of the pre-defined tree cover density thresholds: 10, 15, 20, 25, 30, 50, 75.
 
-
-### Prerequisites and dependencies
-
-Download and install HDF5
-you will need to register and download the software [here](https://www.hdfgroup.org/downloads/hdf5/).
-
-Download the build which matches your python instance (ie 32bit or 64bit)
-Make sure the HDF installation directory is added to your environment PATH. The installation normally should take care of this.
-
-Make sure you have the latest version of Numpy and Panda and install the following modules
-
-```shell
-pip install numpy --upgrade
-pip install panda --upgrade
-pip install SQLAlchemy
-pip install simpledbf
-pip install tables
-```
-
-PyTables requires several drivers which should come with HDF5. To make sure, everything is correctly configured, 
-open your Python console and type in 
-import tables
-
-if no error message appears you are good to go, otherwise revise your installation and troubleshoot. 
-More info [here](http://www.pytables.org/usersguide/installation.html).
-
-
 ### Data Prep
 You will need to build at least 3 mosaics in ArcGIS. Name them exactly as below. They must all be in WGS84 projection.
 
