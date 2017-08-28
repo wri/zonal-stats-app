@@ -1,7 +1,7 @@
 import subprocess
 import arcpy
 import os
-
+import sys
 
 def main_script(layer, raster):
     # add to this if i'm running average area of zstats
@@ -17,7 +17,10 @@ def main_script(layer, raster):
 
     zstats_subprocess = os.path.join(layer.root_dir, "utilities", "zstats_subprocess.py")
 
-    script_cmd = [r"C:\Python27\ArcGIS10.5\python.exe", zstats_subprocess, raster.value,
+    executable = sys.executable
+    exec_32 = executable.replace("x64", "")
+
+    script_cmd = [exec_32, zstats_subprocess, raster.value,
                   raster.zone, layer.final_aoi, raster.cellsize, raster.analysis]
 
     expected_complete_total = len(range(start_id, end_id))
