@@ -4,7 +4,7 @@ import arcpy
 import pandas
 import sqlite3
 
-import prep_shapefile
+from . import prep_shapefile
 from raster_functions import raster_prep
 
 arcpy.CheckOutExtension("Spatial")
@@ -20,7 +20,7 @@ stop = int(sys.argv[7])
 arcpy.env.overwriteOutput = True
 
 for i in range(start, stop):
-    print i
+    print(i)
 
     # to adapt for new zonal stats (which isn't zonal stats), extract by mask, create raster
     # get raster attribute table to make list of 1 column: pixel value 1 column: count
@@ -29,15 +29,15 @@ for i in range(start, stop):
     tables_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'tables')
 
     # select one individual feature from the input shapefile
-    print "prepping shapefile"
+    print("prepping shapefile")
     mask = prep_shapefile.zonal_stats_mask(final_aoi, i)
 
     # calculate average pixel size based on just the shapefile and an area formula
-    print "calculating average pixel size"
+    print("calculating average pixel size")
     avg_pix_size = prep_shapefile.average_pixel_size(mask)
 
     # extract loss/tcd within the shapefile
-    print "extract by mask"
+    print("extract by mask")
     outputdir = os.path.dirname(mask)
     output_tif = os.path.join(outputdir, "extract_loss.tif")
 
@@ -72,4 +72,4 @@ for i in range(start, stop):
     arcpy.env.cellSize = None
     arcpy.env.snapRaster = None
 
-    print 'process succeeded for id {0}'.format(i)
+    print('process succeeded for id {0}'.format(i))

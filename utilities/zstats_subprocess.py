@@ -20,7 +20,7 @@ arcpy.env.overwriteOutput = True
 
 for i in range(start, stop):
 
-    print "prepping feature id {}".format(i)
+    print("prepping feature id {}".format(i))
 
     # select one individual feature from the input shapefile
     mask = prep_shapefile.zonal_stats_mask(final_aoi, i)
@@ -38,10 +38,10 @@ for i in range(start, stop):
 
 
     start_time = datetime.datetime.now()
-
+    print("running zstats")
     outzstats = ZonalStatisticsAsTable(zone, "VALUE", value, z_stats_tbl, "DATA", "SUM")
     end_time = datetime.datetime.now() - start_time
-    print "debug:time elapsed: {}".format(end_time)
+    print("debug:time elapsed: {}".format(end_time))
 
     dbf = simpledbf.Dbf5(z_stats_tbl)
 
@@ -73,4 +73,4 @@ for i in range(start, stop):
     arcpy.env.cellSize = None
     arcpy.env.snapRaster = None
 
-    print 'process succeeded for id {0}'.format(i)
+    print('process succeeded for id {0}'.format(i))

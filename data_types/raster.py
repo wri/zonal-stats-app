@@ -11,7 +11,7 @@ class Raster(object):
     """
 
     def __init__(self, analysis, geodatabase):
-        print "\ncreating a raster object for analysis {}".format(analysis)
+        print("\ncreating a raster object for analysis {}".format(analysis))
         self.analysis = analysis
         self.zone = None
         self.value = None
@@ -32,14 +32,14 @@ class Raster(object):
         self.value = os.path.join(self.geodatabase, zone_value_dict[self.analysis]["value"])
         self.cellsize = zone_value_dict[self.analysis]['cellsize']
 
-        print "populating raster properties with zone: {} and value: {} and cell size {}".format(os.path.basename(self.zone),
+        print("populating raster properties with zone: {} and value: {} and cell size {}".format(os.path.basename(self.zone),
                                                                                 os.path.basename(self.value),
-                                                                                                 self.cellsize)
+                                                                                                 self.cellsize))
 
     def merge_results(self, l):
 
         # convert sql table to df
-        print "converting sql table to df"
+        print("converting sql table to df")
         tables_dir = os.path.join(l.root_dir, 'tables')
         zstats_results_db = os.path.join(tables_dir, 'zstats_results_db.db')
 

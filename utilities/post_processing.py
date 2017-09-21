@@ -51,9 +51,9 @@ def generate_list_columns(intersect, intersect_col):
     try:
         # incrementally add all admin levels for whatever admin level is intersected.
         # example: adm2 will ad id_2, id_1, iso
-        for key, value in mydict[intersect_filename].iteritems():
+        for key, value in mydict[intersect_filename].items():
             id_num = key
-        for key, value in mydict.iteritems():
+        for key, value in mydict.items():
 
             for i in range(0, id_num + 1):
                 try:

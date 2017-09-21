@@ -17,7 +17,7 @@ def intersect_file(intersect_file, intersect_col=None):
 
     except:
 
-        print "user defined intersect field"
+        print("user defined intersect field")
         exp = """!FC_NAME!+"_"+str(!{}!)""".format(str(intersect_col))
 
         return exp
@@ -31,7 +31,7 @@ def intersect(final_aoi, intersect_aoi, root_dir, intersect_col=None):
     intersected_file = os.path.join(root_dir, 'shapefile', "intersect.shp")
     arcpy.Intersect_analysis([final_aoi, intersect_aoi], intersected_file)
 
-    print "intersected with boundary\n"
+    print("intersected with boundary\n")
 
     return intersected_file
 
@@ -53,7 +53,7 @@ def delete_database():
     tables_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     zstats_results_db = os.path.join(tables_dir, 'tables', 'zstats_results_db.db')
     if os.path.exists(zstats_results_db):
-        print "deleting database"
+        print("deleting database")
         os.remove(zstats_results_db)
 
 
@@ -101,5 +101,5 @@ def average_pixel_size(mask):
 
             avg_pix_size = get_area(row[0])
 
-            print avg_pix_size
+            print(avg_pix_size)
     return avg_pix_size

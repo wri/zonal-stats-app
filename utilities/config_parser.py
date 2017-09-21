@@ -1,4 +1,4 @@
-from ConfigParser import SafeConfigParser
+from configparser import SafeConfigParser
 
 
 def read_config(config):

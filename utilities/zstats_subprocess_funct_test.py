@@ -1,7 +1,7 @@
 import sys
 import os
 import sqlite3
-import prep_shapefile
+from . import prep_shapefile
 import arcpy
 from arcpy.sa import *
 import datetime
@@ -36,11 +36,11 @@ def zstats_subprocess(value, zone, final_aoi, cellsize, analysis, start, stop):
         outzstats = ZonalStatisticsAsTable(zone, "VALUE", value, z_stats_tbl, "DATA", "SUM")
         arcpy.AddMessage('debug: finished zstats')
         end_time = datetime.datetime.now() - start_time
-        print "time elapsed: {}".format(end_time)
+        print("time elapsed: {}".format(end_time))
 
         result = arcpy.GetCount_management(z_stats_tbl)
         count = int(result.getOutput(0))
-        print "count of records in zstats table: {}".format(count)
+        print("count of records in zstats table: {}".format(count))
         dbf = simpledbf.Dbf5(z_stats_tbl)
 
         # convert dbf to pandas dataframe
@@ -71,5 +71,5 @@ def zstats_subprocess(value, zone, final_aoi, cellsize, analysis, start, stop):
         arcpy.env.cellSize = None
         arcpy.env.snapRaster = None
 
-        print 'process succeeded for id {0}'.format(i)
+        print('process succeeded for id {0}'.format(i))
         arcpy.AddMessage('process succeeded for id {0}'.format(i))

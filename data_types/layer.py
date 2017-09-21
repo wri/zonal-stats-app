@@ -2,7 +2,7 @@ import os
 import simpledbf
 import pandas as pd
 import arcpy
-import raster
+from . import raster
 import sys
 
 from utilities import post_processing
@@ -30,7 +30,7 @@ class Layer(object):
 
         self.root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-        print "creating Layer with aoi {} and source id column {}".format(self.source_aoi, self.source_id_col)
+        print("creating Layer with aoi {} and source id column {}".format(self.source_aoi, self.source_id_col))
 
     # these are all the things i want to do with the input shapefile. this is called from zonal_stats.py
     def project_source_aoi(self):
@@ -43,7 +43,7 @@ class Layer(object):
         self.final_aoi = self.source_aoi
 
     def join_tables(self, threshold, user_def_column_name, output_file_name):
-        print "joining tables"
+        print("joining tables")
 
         # make a list of all the tables we have. These are already dataframes
         possible_dfs = [self.emissions, self.forest_loss, self.biomass_weight, self.forest_extent]
@@ -76,9 +76,9 @@ class Layer(object):
         # values-calculated-from-a-pre?rq=1
         # tcd and year columns is equal to the first and second output from the function: value_to_tcd_year
         try:
-            merged['tcd'], merged['year'] = zip(*merged["VALUE"].map(post_processing.value_to_tcd_year))
+            merged['tcd'], merged['year'] = list(zip(*merged["VALUE"].map(post_processing.value_to_tcd_year)))
         except KeyError:
-            print "oops, loss mosaic doesn't have the arithmetic function applied. Refer to readme file"
+            print("oops, loss mosaic doesn't have the arithmetic function applied. Refer to readme file")
             sys.exit()
 
         # the value_to_tcd_year function is good for when user runs all thresholds, but not just one.

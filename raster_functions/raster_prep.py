@@ -6,7 +6,7 @@ import csv
 def remap_threshold(geodatabase, threshold):
     # the loss mosaic should have a function applied to it 1 time and never gets touched after.
     # the only function to be swapped out is for remap
-    print "remaping mosaics in {} to {}".format(geodatabase, threshold)
+    print("remaping mosaics in {} to {}".format(geodatabase, threshold))
     this_dir = os.path.dirname(os.path.abspath(__file__))
     remap_func = os.path.join(this_dir, "remap_gt" + str(threshold) + ".rft.xml")
     loss_tcd_func = os.path.join(this_dir, "loss_tcd.rft.xml")
@@ -25,7 +25,7 @@ def output_ras_table(input_raster, avg_pix_size):
     this_dir = os.path.dirname(os.path.abspath(__file__))
 
     # build raster attribute table
-    print "build raster table"
+    print("build raster table")
     arcpy.BuildRasterAttributeTable_management(input_raster, "Overwrite")
 
     # write attribute table to text file, while calculating area

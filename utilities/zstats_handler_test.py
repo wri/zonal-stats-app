@@ -1,7 +1,7 @@
 import subprocess
 import arcpy
 import os
-import zstats_subprocess_funct_test
+from . import zstats_subprocess_funct_test
 
 
 def main_script(layer, raster, method):
@@ -12,7 +12,7 @@ def main_script(layer, raster, method):
 
     end_id = int(arcpy.GetCount_management(final_aoi).getOutput(0))
 
-    print "Number of features: {}".format(end_id)
+    print("Number of features: {}".format(end_id))
 
     zstats_subprocess = None
 
@@ -20,10 +20,10 @@ def main_script(layer, raster, method):
         zstats_subprocess = os.path.join(layer.root_dir, "utilities", "zstats_subprocess.py")
 
     if method == 'average_area':
-        print "method is average"
+        print("method is average")
         zstats_subprocess = os.path.join(layer.root_dir, "utilities", "average_area.py")
 
-    expected_complete_total = len(range(start_id, end_id))
+    expected_complete_total = len(list(range(start_id, end_id)))
     feature_status = {}
 
     while len(feature_status) < expected_complete_total:
