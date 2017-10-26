@@ -86,32 +86,34 @@ class Layer(object):
         if threshold != "all":
             merged['tcd'] = "> {}%".format(threshold)
 
-        # get the input table into df format
+        # get the input shapefile into df format
         final_aoi_dbf = self.final_aoi.replace(".shp", ".dbf")
         final_aoi_dbf = simpledbf.Dbf5(final_aoi_dbf)
 
         # convert dbf to pandas dataframe
         final_aoi_df = final_aoi_dbf.to_dataframe()
 
-        # drop columns not needed
-
-        columns_to_keep = ['ID', 'tcd', 'year']
-        columns_to_keep.extend(analysis_names)
-
-        if user_def_column_name:
-
-            columns_to_keep.append(user_def_column_name)
-
-        final_aoi_df = final_aoi_df.drop([x for x in list(final_aoi_df.columns.values) if x not in columns_to_keep], 1)
-
+        # reset index of final_aoi_df
         final_aoi_df = final_aoi_df.reset_index()
 
-        merged_reset = merged.reset_index()
+        # make new column equal to index number
+        final_aoi_df['ID_aoi'] = final_aoi_df.index
 
-        # join the input shapefile to the output table results
-        joined = merged_reset.merge(final_aoi_df, how='left', left_on="ID", right_index=True)
+        if user_def_column_name:
+            id_col = user_def_column_name
 
+        else:
+            id_col = "ID_df"
+
+        columns_to_keep = [id_col, 'tcd', 'year']
+        columns_to_keep.extend(analysis_names)
+
+        joined = pd.merge(merged, final_aoi_df, left_on='ID', right_on='ID_aoi', suffixes=['_df', '_aoi'])
+
+        joined=joined.reset_index()
         joined = joined[columns_to_keep]
         # write final output to csv
+        if not user_def_column_name:
+            joined = joined.rename(columns={'ID_df': 'ID'})
         final_output_csv = os.path.join(self.root_dir, 'result', '{}.csv'.format(output_file_name))
         joined.to_csv(final_output_csv, index=False)
