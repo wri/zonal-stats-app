@@ -30,7 +30,7 @@ class Layer(object):
 
         self.root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-        print("creating Layer with aoi {} and source id column {}".format(self.source_aoi, self.source_id_col))
+        print("creating Layer with aoi {} and source id column {}\n".format(self.source_aoi, self.source_id_col))
 
     # these are all the things i want to do with the input shapefile. this is called from zonal_stats.py
     def project_source_aoi(self):
@@ -43,7 +43,7 @@ class Layer(object):
         self.final_aoi = self.source_aoi
 
     def join_tables(self, threshold, user_def_column_name, output_file_name):
-        print("joining tables")
+        print("joining tables \n")
 
         # make a list of all the tables we have. These are already dataframes
         possible_dfs = [self.emissions, self.forest_loss, self.biomass_weight, self.forest_extent]
@@ -96,24 +96,26 @@ class Layer(object):
         # reset index of final_aoi_df
         final_aoi_df = final_aoi_df.reset_index()
 
-        # make new column equal to index number
-        final_aoi_df['ID_aoi'] = final_aoi_df.index
-
         if user_def_column_name:
-            id_col = user_def_column_name
+            print('assigning rows to user-def column values \n')
+            # make new column equal to index number bc this is the join
+            final_aoi_df['aoi_ID'] = final_aoi_df.index
 
-        else:
-            id_col = "ID_df"
+            # if ID in shapefile, rename it otherwise join will fail
+            if 'ID' in final_aoi_df.columns:
+                final_aoi_df = final_aoi_df.rename(columns={'ID': 'user_ID'})
 
-        columns_to_keep = [id_col, 'tcd', 'year']
-        columns_to_keep.extend(analysis_names)
+            # join zstats to shapefile
+            joined = pd.merge(merged, final_aoi_df, left_on='ID', right_on='aoi_ID')
 
-        joined = pd.merge(merged, final_aoi_df, left_on='ID', right_on='ID_aoi', suffixes=['_df', '_aoi'])
+            columns_to_keep = [user_def_column_name, 'tcd', 'year']
+            columns_to_keep.extend(analysis_names)
 
-        joined=joined.reset_index()
-        joined = joined[columns_to_keep]
-        # write final output to csv
-        if not user_def_column_name:
-            joined = joined.rename(columns={'ID_df': 'ID'})
+            merged = joined[columns_to_keep]
+
+
+        print('SAMPLE OF OUTPUT:')
+        print (merged.head(5))
+
         final_output_csv = os.path.join(self.root_dir, 'result', '{}.csv'.format(output_file_name))
-        joined.to_csv(final_output_csv, index=False)
+        merged.to_csv(final_output_csv, index=False)
