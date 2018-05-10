@@ -2,12 +2,9 @@ import os
 import simpledbf
 import pandas as pd
 import arcpy
-from . import raster
 import sys
 
-from utilities import post_processing
-from utilities import prep_shapefile
-
+from utilities import post_processing, final_columns
 
 class Layer(object):
     """ A layer class to prep the input shapefile to zonal stats
@@ -96,23 +93,17 @@ class Layer(object):
         # reset index of final_aoi_df
         final_aoi_df = final_aoi_df.reset_index()
 
+        new_cols = []
+
         if user_def_column_name:
-            print('assigning rows to user-def column values \n')
-            # make new column equal to index number bc this is the join
-            final_aoi_df['aoi_ID'] = final_aoi_df.index
+            merged = final_columns.user_cols(user_def_column_name, final_aoi_df, merged, analysis_names)
 
-            # if ID in shapefile, rename it otherwise join will fail
-            if 'ID' in final_aoi_df.columns:
-                final_aoi_df = final_aoi_df.rename(columns={'ID': 'user_ID'})
-
-            # join zstats to shapefile
-            joined = pd.merge(merged, final_aoi_df, left_on='ID', right_on='aoi_ID')
-
-            columns_to_keep = [user_def_column_name, 'tcd', 'year']
+        else:
+            columns_to_keep = ['ID', 'tcd', 'year']
             columns_to_keep.extend(analysis_names)
+            print(columns_to_keep)
 
-            merged = joined[columns_to_keep]
-
+            merged = merged[columns_to_keep]
 
         print('SAMPLE OF OUTPUT:')
         print (merged.head(5))
