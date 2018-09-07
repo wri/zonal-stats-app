@@ -67,7 +67,8 @@ class Layer(object):
         # join all the data frames together on Value and ID
         merged = pd.concat([df.set_index(['VALUE', 'ID']) for df in df_list], axis=1)
         merged = merged.reset_index()
-
+        print merged.head()
+        sys.exit()
         # To 2 get outputs from a single function and apply to 2 different columns in the dataframe:
         # http://stackoverflow.com/questions/12356501/pandas-create-two-new-columns-in-a-dataframe-with-
         # values-calculated-from-a-pre?rq=1
