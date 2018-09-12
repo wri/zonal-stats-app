@@ -2,7 +2,9 @@ import os
 import datetime
 
 import logging
-logging.getLogger("requests").setLevel(logging.ERROR)
+# configure log file
+logging.basicConfig(filename='zonal_stats.log', level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+logging.getLogger().addHandler(logging.StreamHandler())
 
 from data_types.layer import Layer
 from data_types.raster import Raster
@@ -11,6 +13,7 @@ from utilities import zstats_handler, post_processing, prep_shapefile, config_pa
 
 
 start = datetime.datetime.now()
+logging.debug("\n\nHello! This is the beginning of the log")
 # get user inputs from config file:
 config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config_file.ini")
 config_dict = config_parser.read_config(config_file)
@@ -64,4 +67,4 @@ if l.emissions is not None:
 # join possible tables (loss, emissions, extent, etc) and decode to loss year, tcd
 l.join_tables(threshold, user_def_column_name, output_file_name)
 
-print(("elapsed time: {}".format(datetime.datetime.now() - start)))
+logging.debug(("elapsed time: {}".format(datetime.datetime.now() - start)))

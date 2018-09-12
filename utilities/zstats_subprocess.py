@@ -7,7 +7,7 @@ from arcpy.sa import *
 import datetime
 import simpledbf
 arcpy.CheckOutExtension("Spatial")
-
+import logging
 value = sys.argv[1]
 zone = sys.argv[2]
 final_aoi = sys.argv[3]
@@ -19,7 +19,6 @@ stop = int(sys.argv[7])
 arcpy.env.overwriteOutput = True
 
 for i in range(start, stop):
-
     print("prepping feature id {}".format(i))
 
     # select one individual feature from the input shapefile

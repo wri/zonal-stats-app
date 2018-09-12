@@ -2,7 +2,12 @@ import subprocess
 import arcpy
 import os
 import sys
+import logging
 
+#
+# # configure log file
+# logging.basicConfig(filename='zonal_stats.log', level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+# logging.getLogger().addHandler(logging.StreamHandler())
 def main_script(layer, raster):
     # add to this if i'm running average area of zstats
     final_aoi = layer.final_aoi
@@ -11,7 +16,7 @@ def main_script(layer, raster):
 
     end_id = int(arcpy.GetCount_management(final_aoi).getOutput(0))
 
-    print("Number of features: {}".format(end_id))
+    logging.debug("Number of features: {}".format(end_id))
 
     zstats_subprocess = os.path.join(layer.root_dir, "utilities", "zstats_subprocess.py")
 
@@ -24,7 +29,7 @@ def main_script(layer, raster):
     feature_status = {}
 
     while len(feature_status) < expected_complete_total:
-
+        # logging.debug(start_id)
         cmd = script_cmd + [str(start_id), str(end_id)]
 
         # this runs the analysis
@@ -49,7 +54,6 @@ def main_script(layer, raster):
                 if b'process succeeded' in line:
 
                     feature_status[start_id] = True
-
                     start_id += 1
 
         p.wait()
@@ -58,5 +62,6 @@ def main_script(layer, raster):
 
         if p.returncode != 0:
             print("failed")
+            logging.debug("WARNING: Feature id {} failed".format(start_id))
             feature_status[start_id] = False
             start_id += 1
