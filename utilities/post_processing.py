@@ -2,7 +2,7 @@ import pandas as pd
 
 
 def process_emissions(layer):
-
+    layer.emissions.SUM = layer.emissions.SUM.astype(float)
     layer.emissions['emissions_mtc02'] = layer.emissions.SUM * 3.67 * .5 / 1000000
 
     del layer.emissions['emissions']
@@ -13,19 +13,22 @@ def process_emissions(layer):
 def value_to_tcd_year(value):
 
     remap_dict = {
-        1: [{'tcd': '1-10 %', 'sub': 20}],
-        2: [{'tcd': '11-15 %', 'sub': 40}],
-        3: [{'tcd': '16-20 %', 'sub': 60}],
-        4: [{'tcd': '21-25 %', 'sub': 80}],
-        5: [{'tcd': '26-30 %', 'sub': 100}],
-        6: [{'tcd': '31-50 %', 'sub': 120}],
-        7: [{'tcd': '51-75 %', 'sub': 140}],
-        8: [{'tcd': '76-100 %', 'sub': 160}]
+        1: [{'tcd': '1-10 %', 'sub': 40}],
+        2: [{'tcd': '11-15 %', 'sub': 60}],
+        3: [{'tcd': '16-20 %', 'sub': 80}],
+        4: [{'tcd': '21-25 %', 'sub': 100}],
+        5: [{'tcd': '26-30 %', 'sub': 120}],
+        6: [{'tcd': '31-50 %', 'sub': 140}],
+        7: [{'tcd': '51-75 %', 'sub': 160}],
+        8: [{'tcd': '76-100 %', 'sub': 180}]
     }
+    # divide the coded value by interval. if its 1.175, use int to get 1
+    div = int(value / 40)
 
-    div = int(value/20)
+    # look up that value to get TCD
     tcd = remap_dict[div][0]['tcd']
 
+    # find this value which is subtraced from the coded value. 47-40 = 7. Gets the year
     sub = remap_dict[div][0]['sub']
 
     year = 2000 + (value - sub)

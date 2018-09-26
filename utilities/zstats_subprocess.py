@@ -33,7 +33,7 @@ for i in range(start, stop):
 
     tables_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'tables')
 
-    z_stats_tbl = os.path.join(tables_dir, 'output.dbf')
+    z_stats_tbl = os.path.join(tables_dir, 'output_{}.dbf'.format(i))
 
 
     start_time = datetime.datetime.now()
@@ -51,6 +51,7 @@ for i in range(start, stop):
     # populate a new field "id" with the FID and analysis with the sum
     df['ID'] = i
     df[analysis] = df['SUM']
+    df.VALUE = df.VALUE.astype(int)
 
     # name of the sql database to store the sql table
     zstats_results_db = os.path.join(tables_dir, 'zstats_results_db.db')

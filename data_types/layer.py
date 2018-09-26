@@ -54,6 +54,8 @@ class Layer(object):
 
             if item == 'forest_loss':
                 analysis_names[index] = 'forest_loss_ha'
+
+                self.forest_loss['forest_loss'] = self.forest_loss.forest_loss.astype(float)
                 self.forest_loss['forest_loss_ha'] = self.forest_loss['forest_loss'] / 10000
 
             if item == 'forest_extent':
@@ -72,6 +74,7 @@ class Layer(object):
         # http://stackoverflow.com/questions/12356501/pandas-create-two-new-columns-in-a-dataframe-with-
         # values-calculated-from-a-pre?rq=1
         # tcd and year columns is equal to the first and second output from the function: value_to_tcd_year
+
         try:
             merged['tcd'], merged['year'] = list(zip(*merged["VALUE"].map(post_processing.value_to_tcd_year)))
         except KeyError:
@@ -101,7 +104,6 @@ class Layer(object):
         else:
             columns_to_keep = ['ID', 'tcd', 'year']
             columns_to_keep.extend(analysis_names)
-            print(columns_to_keep)
 
             merged = merged[columns_to_keep]
 
