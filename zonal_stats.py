@@ -11,9 +11,9 @@ from data_types.raster import Raster
 from raster_functions import raster_prep
 from utilities import zstats_handler, post_processing, prep_shapefile, config_parser
 
-
 start = datetime.datetime.now()
 logging.debug("\n\nHello! This is the beginning of the log")
+
 # get user inputs from config file:
 config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config_file.ini")
 config_dict = config_parser.read_config(config_file)
@@ -45,8 +45,8 @@ l.final_aoi = shapefile
 # project input to wgs84
 l.project_source_aoi()
 
-# if we set an intersection layer, this will evaluate. otherwise, final aoi = source aoi
-l.intersect_source_aoi()
+# loop over the analysis. If forest_loss or biomass_weight, will just be one analysis. if emissions, need to
+# run forest_loss and emissions
 
 for analysis_name in analysis_requested:
     # create raster object.
@@ -56,13 +56,16 @@ for analysis_name in analysis_requested:
     zstats_handler.main_script(l, r)
 
     # get results from sql to pandas df
-    r.merge_results(l)
+    r.db_to_df(l)
 
+    # this roughly translate to layer.analysis_name == r.df
+    # or forest_loss = pd.DataFrame(forestlossdata). It gives the resulting dataframe the name of the analysis and sets
+    # it as the attribute l.forest_loss, l.emissions, which are the dataframes
     setattr(l, analysis_name, r.df)
 
 if l.emissions is not None:
-    print("processing emissions")
-    l.emissions = post_processing.process_emissions(l)
+    print("converting biomass to emissions")
+    l.emissions = post_processing.biomass_to_mtc02(l)
 
 # join possible tables (loss, emissions, extent, etc) and decode to loss year, tcd
 l.join_tables(threshold, user_def_column_name, output_file_name)

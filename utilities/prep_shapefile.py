@@ -58,7 +58,7 @@ def delete_database():
 
 
 def build_analysis(analysis_requested):
-
+    # if analysis is emissions, we still need to run forest_loss
     if not "forest_loss" in analysis_requested:
         analysis_requested.append('forest_loss')
 

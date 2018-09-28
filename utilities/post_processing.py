@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-def process_emissions(layer):
+def biomass_to_mtc02(layer):
     layer.emissions.SUM = layer.emissions.SUM.astype(float)
     layer.emissions['emissions_mtc02'] = layer.emissions.SUM * 3.67 * .5 / 1000000
 

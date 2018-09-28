@@ -36,20 +36,20 @@ class Layer(object):
         self.final_aoi = os.path.join(self.root_dir, 'shapefile', "project.shp")
         arcpy.Project_management(self.source_aoi, self.final_aoi, out_cs)
 
-    def intersect_source_aoi(self):
-        self.final_aoi = self.source_aoi
-
     def join_tables(self, threshold, user_def_column_name, output_file_name):
         print("joining tables \n")
 
         # make a list of all the tables we have. These are already dataframes
         possible_dfs = [self.emissions, self.forest_loss, self.biomass_weight, self.forest_extent]
+
+        # get rid of df's we don't have
         df_list = [x for x in possible_dfs if x is not None]
 
         # how to get column names to keep? like extent, emissions, loss? i'm going through and getting
         # third column for each df which is the analysis name
         analysis_names = [x.columns.values[3] for x in df_list]
 
+        # convert original SUM values into the right units
         for index, item in enumerate(analysis_names):
 
             if item == 'forest_loss':
@@ -66,7 +66,8 @@ class Layer(object):
                 analysis_names[index] = 'biomass_weight_Tg'
                 self.biomass_weight['biomass_weight_Tg'] = self.biomass_weight['biomass_weight'] / 1000000
 
-        # join all the data frames together on Value and ID
+        # join all the data frames together on Value and ID. Value is the tcd/loss code (41 = loss in 2001 at 1-10%tcd
+        # or loss in 2001 at >30% tcd. ID is the unique ID of the feature in the shapefile
         merged = pd.concat([df.set_index(['VALUE', 'ID']) for df in df_list], axis=1)
         merged = merged.reset_index()
 
@@ -95,8 +96,6 @@ class Layer(object):
 
         # reset index of final_aoi_df
         final_aoi_df = final_aoi_df.reset_index()
-
-        new_cols = []
 
         if user_def_column_name:
             merged = final_columns.user_cols(user_def_column_name, final_aoi_df, merged, analysis_names)

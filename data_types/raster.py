@@ -36,7 +36,7 @@ class Raster(object):
                                                                                 os.path.basename(self.value),
                                                                                                  self.cellsize))
 
-    def merge_results(self, l):
+    def db_to_df(self, l):
 
         # convert sql table to df
         print("converting sql table to df")

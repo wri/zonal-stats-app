@@ -4,20 +4,15 @@ import csv
 
 
 def remap_threshold(geodatabase, threshold):
-    # the loss mosaic should have a function applied to it 1 time and never gets touched after.
-    # the only function to be swapped out is for remap
+
+    # Apply a remap function to the tcd mosaic. Turns values of TCD into bins recoded to
+    # values of 40, 80, etc.
     print("remaping mosaics in {} to {}".format(geodatabase, threshold))
     this_dir = os.path.dirname(os.path.abspath(__file__))
     remap_func = os.path.join(this_dir, "remap_gt" + str(threshold) + ".rft.xml")
-    loss_tcd_func = os.path.join(this_dir, "loss_tcd.rft.xml")
     tcd_mosaic = os.path.join(geodatabase, "tcd")
-    loss_mosaic = os.path.join(geodatabase, "loss")
 
     arcpy.EditRasterFunction_management(tcd_mosaic, "EDIT_MOSAIC_DATASET", "REPLACE", remap_func)
-
-    # print "applying function to add loss and tcd mosaics"
-    # arcpy.EditRasterFunction_management(loss_mosaic, "EDIT_MOSAIC_DATASET", "REPLACE", loss_tcd_func)
-
 
 
 def output_ras_table(input_raster, avg_pix_size):

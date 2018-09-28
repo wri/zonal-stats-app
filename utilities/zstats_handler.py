@@ -4,40 +4,38 @@ import os
 import sys
 import logging
 
-#
-# # configure log file
-# logging.basicConfig(filename='zonal_stats.log', level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
-# logging.getLogger().addHandler(logging.StreamHandler())
+
 def main_script(layer, raster):
-    # add to this if i'm running average area of zstats
+
+    # this is the shapefile after being projected
     final_aoi = layer.final_aoi
 
+    # get the range of features to run
     start_id = 0
-
     end_id = int(arcpy.GetCount_management(final_aoi).getOutput(0))
 
     logging.debug("Number of features: {}".format(end_id))
 
     zstats_subprocess = os.path.join(layer.root_dir, "utilities", "zstats_subprocess.py")
 
+    # run using python3
     executable = sys.executable
 
     script_cmd = [executable, zstats_subprocess, raster.value,
                   raster.zone, layer.final_aoi, raster.cellsize, raster.analysis]
 
     expected_complete_total = len(list(range(start_id, end_id)))
-    feature_status = {}
+    feature_status = {} # if the feature failed, this gets populated
 
-    while len(feature_status) < expected_complete_total:
-        # logging.debug(start_id)
+    while len(feature_status) < expected_complete_total: # if there is an error, write a message but keep going
+
         cmd = script_cmd + [str(start_id), str(end_id)]
 
-        # this runs the analysis
+        # this runs the analysis. send to a for-loop that will run zstats for each feature ID
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
         # for each line that comes back from the subprocess, if "succeeded" is in the line
         # increase counter by 1.
-        # for line in iter(p.stdout.readline, b''):
         for line in iter(p.stdout.readline, b''):
 
             arcpy.AddMessage(line)
@@ -64,4 +62,6 @@ def main_script(layer, raster):
             print("failed")
             logging.debug("WARNING: Feature id {} failed".format(start_id))
             feature_status[start_id] = False
+
+            # this will increase the start ID so we don't rerun the failed feature
             start_id += 1

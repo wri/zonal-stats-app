@@ -6,8 +6,9 @@ import arcpy
 from arcpy.sa import *
 import datetime
 import simpledbf
+
 arcpy.CheckOutExtension("Spatial")
-import logging
+
 value = sys.argv[1]
 zone = sys.argv[2]
 final_aoi = sys.argv[3]
@@ -23,7 +24,10 @@ for i in range(start, stop):
 
     # select one individual feature from the input shapefile
     mask = prep_shapefile.zonal_stats_mask(final_aoi, i)
+
     scratch_wkspc = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'scratch.gdb')
+
+    # set environments
     arcpy.env.extent = mask
     arcpy.env.mask = mask
     arcpy.env.cellSize = cellsize
@@ -35,22 +39,23 @@ for i in range(start, stop):
 
     z_stats_tbl = os.path.join(tables_dir, 'output_{}.dbf'.format(i))
 
-
     start_time = datetime.datetime.now()
+
     print("running zstats")
     outzstats = ZonalStatisticsAsTable(zone, "VALUE", value, z_stats_tbl, "DATA", "SUM")
+
     end_time = datetime.datetime.now() - start_time
     print("debug:time elapsed: {}".format(end_time))
 
+    # convert the output zstats table into a pandas DF
     dbf = simpledbf.Dbf5(z_stats_tbl)
-
-    # convert dbf to pandas dataframe
     df = dbf.to_dataframe()
 
-    # or.... df = average_area.average_area(mask, i, zone)
     # populate a new field "id" with the FID and analysis with the sum
     df['ID'] = i
     df[analysis] = df['SUM']
+
+    # sometimes this value came back as an object, so here we are fixing that bug
     df.VALUE = df.VALUE.astype(int)
 
     # name of the sql database to store the sql table
