@@ -6,6 +6,7 @@ import sys
 
 from utilities import post_processing, final_columns
 
+
 class Layer(object):
     """ A layer class to prep the input shapefile to zonal stats
     :param source_aoi: the path to the shapefile to run zonal stats
