@@ -3,7 +3,7 @@ import datetime
 
 import logging
 # configure log file
-logging.basicConfig(filename='zonal_stats.log', level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+logging.basicConfig(filename='log_zonal_stats.log', level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 logging.getLogger().addHandler(logging.StreamHandler())
 
 from data_types.layer import Layer
