@@ -44,7 +44,7 @@ You will need to build at least 3 mosaics in ArcGIS. Name them exactly as below.
 
 Mosaic Name | Data within Mosaic
 ----- | -----
-loss | UMD Hansen Loss tiles
+loss | UMD Hansen Loss tiles. NOTE: Make the datatype for this unsigned 16 bit integers. This is necessary if running the tool for all tcd levels or the 51-75% and 76-100% levels. Otherwise, tcd results for >50% will not be included in the output csv.
 tcd | UMD Hansen Tree Cover Extent tiles
 area | Custom Built Area Tiles
 biomass (optional) | Woods Hole Research Center Biomass in Mg/Ha
