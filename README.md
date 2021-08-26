@@ -92,7 +92,7 @@ Other options:
 ### Run the Code
 This can be done several ways. Either within a python code editor, or the most simple way, through a command prompt window.
 1. Open a command prompt window from the zonal-stats-app folder
-2. Type: python zonal_stats.py
+2. Type: `%python3% zonal_stats.py` (The script uses Python3, so this tells the comland line to use Python3 instead of the default Python2.)
 3. Hit enter
 
 ### View the results
