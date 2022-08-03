@@ -40,7 +40,11 @@ More info [here](http://www.pytables.org/usersguide/installation.html).
 
 
 ### Data Prep
-You will need to build at least 3 mosaics in ArcGIS. Name them exactly as below. They must all be in WGS84 projection.
+
+1. Build at least 3 mosaic datasets in ArcGIS. 
+    1. Create a file geodatabase, right click to select "new" and "mosaic dataset." 
+    2. Name them exactly as the table below. They must all be in WGS84 projection. 
+    3. Right click on the empty mosaic dataset and click "add rasters". If the raster dataset is stored in a stand alone folder with no other data, keep the input data "workspace" select, navigate to the data and click ok. "Add raster to mosaic dataset" will run, and once complete a green footpint of the mosaic dataset will be filled out the raster data boundaries.
 
 Mosaic Name | Data within Mosaic
 ----- | -----
@@ -49,7 +53,7 @@ tcd | UMD Hansen Tree Cover Extent tiles
 area | Custom Built Area Tiles
 biomass (optional) | Woods Hole Research Center Biomass in Mg/Ha
 
-1. Apply an Arithmetic Function to the Loss Mosaic
+2. Apply an Arithmetic Function to the Loss Mosaic
    1. In the catalog view of ArcGIS, right click the LOSS mosaic -> properties. 
    2. Under the "functions" tab, right click "Mosaic Function" -> Insert Function -> Arithmetic. 
    3. Under the "Arithmetic tab", for "Input Raster 2", navigate and select the "TCD" mosaic you just createad. Input Raster 2 should now say "tcd". The "Operation" shoud say "Plus". Click OK.
@@ -57,7 +61,7 @@ biomass (optional) | Woods Hole Research Center Biomass in Mg/Ha
    
    
    <br />![loss mosaic functions](https://github.com/wri/zonal-stats-app/blob/master/images/loss_mosaic.JPG?raw=true "Functions Applied to Loss Mosaic")
-2. Apply an Arithmetic Function to the Biomass Mosaic (if analyzing emissions). The biomass data is in Mg/ha. We want to know how much biomass is in each PIXEL. To do this, multiply the biomass pixel by the area pixel in hectares. 
+3. Apply an Arithmetic Function to the Biomass Mosaic (if analyzing emissions). The biomass data is in Mg/ha. We want to know how much biomass is in each PIXEL. To do this, multiply the biomass pixel by the area pixel in hectares. 
    1. In the catalog view of ArcGIS, right click the BIOMASS mosaic -> properties. 
    2. Under the "functions" tab, right click "Mosaic Function" -> Insert Function -> Arithmetic. 
    3. Under the "Arithmetic tab", for "Input Raster 2", navigate and select the "AREA" mosaic you just createad. Input Raster 2 should now say "biomass". Change the "Operation" to "Multiply. Click OK.
